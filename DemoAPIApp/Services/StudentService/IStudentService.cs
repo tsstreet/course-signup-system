@@ -13,5 +13,7 @@ namespace DemoAPIApp.Services.StudentServices
 
         Task<Student> UpdateStudent(int id, Student student);
 
+        Task<Student> DeleteStudent(int id);
+
     }
 }

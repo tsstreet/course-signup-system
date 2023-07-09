@@ -2,6 +2,7 @@
 using DemoAPIApp.Services.StudentServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DemoAPIApp.Controllers
 {
@@ -43,6 +44,14 @@ namespace DemoAPIApp.Controllers
         {
             var studentUpdate = await _studentService.UpdateStudent(id, student);
             return Ok(studentUpdate);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<User>> DeleteStudent(int id)
+        {
+            var student = await _studentService.DeleteStudent(id);
+
+            return Ok(student);
         }
 
     }

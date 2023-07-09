@@ -1,5 +1,4 @@
-﻿
-using DemoAPIApp.Data.Model;
+﻿using DemoAPIApp.Data.Model;
 using DemoAPIApp.Services.StudentServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +46,18 @@ namespace DemoAPIApp.Services.StudentService
             await _context.SaveChangesAsync();
 
             return studentUpdate;
+        }
+
+        public async Task<Student> DeleteStudent(int id)
+        {
+
+            var student = await _context.Students.FindAsync(id);
+
+            _context.Students.Remove(student);
+
+            await _context.SaveChangesAsync();
+
+            return student;
         }
     }
 }
