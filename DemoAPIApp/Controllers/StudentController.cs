@@ -47,7 +47,7 @@ namespace DemoAPIApp.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteStudent(int id)
+        public async Task<ActionResult<Student>> DeleteStudent(int id)
         {
             var student = await _studentService.DeleteStudent(id);
 
