@@ -29,6 +29,13 @@ namespace DemoAPIApp.Services.StudentService
 
         public async Task<Student> AddStudent(Student student)
         {
+            var existStudent = await _context.Students.FirstOrDefaultAsync(x => x.Email == student.Email );
+
+            if (existStudent != null)
+            {
+                throw new Exception("Email already exist");
+            }
+
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
             return student;
@@ -42,6 +49,12 @@ namespace DemoAPIApp.Services.StudentService
             studentUpdate.Email = student.Email;
             studentUpdate.Address = student.Address;
             studentUpdate.Phone = student.Phone;
+            studentUpdate.BirthDay = student.BirthDay;
+            studentUpdate.Gender = student.Gender;
+            studentUpdate.ParentName = student.ParentName;
+            studentUpdate.Class = student.Class;
+            studentUpdate.Password = student.Password;
+            studentUpdate.ImageUrl = studentUpdate.ImageUrl;
 
             await _context.SaveChangesAsync();
 

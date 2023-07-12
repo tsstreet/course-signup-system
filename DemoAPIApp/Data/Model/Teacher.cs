@@ -2,13 +2,13 @@
 
 namespace DemoAPIApp.Data.Model
 {
-    public class Student
+    public class Teacher
     {
         [Key]
-        public int StdId { get; set; }
+        public int TeacherId { get; set; }
 
         [Required]
-        public string? StdCode { get; set; }
+        public string? TeacherCode { get; set; }
 
         [Required]
         public string? LastName { get; set; }
@@ -21,18 +21,18 @@ namespace DemoAPIApp.Data.Model
 
         [Required]
         public DateTime BirthDay { get; set; }
-        public string? ParentName { get; set; }
+
+
         public string? Address { get; set; }
+
+        [Required]
         public string? Phone { get; set; }
-
-        [Required]
+        [Required] 
         public string? Email { get; set; }
+
         public string? ImageUrl { get; set; }
-
-        [Required]
         public string? Class { get; set;}
-
-        [Required]
         public string? Password { get; set; }
     }
+   
 }
