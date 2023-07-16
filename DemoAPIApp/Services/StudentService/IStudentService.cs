@@ -1,7 +1,7 @@
 ﻿using DemoAPIApp.Data.Model;
 using NuGet.Protocol.Plugins;
 
-namespace DemoAPIApp.Services.StudentServices
+namespace DemoAPIApp.Services.StudentService
 {
     public interface IStudentService
     {

@@ -1,6 +1,5 @@
 ﻿using DemoAPIApp.Data.Model;
-using DemoAPIApp.Services.StudentServices;
-using DemoAPIApp.Services.TeacherServices;
+using DemoAPIApp.Services.TeacherService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +29,13 @@ namespace DemoAPIApp.Services.TeacherService
 
         public async Task<Teacher> AddTeacher(Teacher teacher)
         {
+            var existTeacher = await _context.Teachers.FirstOrDefaultAsync(x => x.Email == teacher.Email);
+
+            if (existTeacher != null)
+            {
+                throw new Exception("Email already exist");
+            }
+
             _context.Teachers.Add(teacher);
             await _context.SaveChangesAsync();
             return teacher;
@@ -37,13 +43,14 @@ namespace DemoAPIApp.Services.TeacherService
 
         public async Task<Teacher> UpdateTeacher(int id, Teacher teacher)
         {
+           
             var teacherUpdate = await _context.Teachers.FindAsync(id);
             teacherUpdate.LastName = teacher.LastName;
             teacherUpdate.FullName = teacher.FullName;
             teacherUpdate.Email = teacher.Email;
             teacherUpdate.Address = teacher.Address;
             teacherUpdate.Phone = teacher.Phone;
-            teacherUpdate.BirthDay = teacher.BirthDay;
+            teacherUpdate.Dob = teacher.Dob;
             teacherUpdate.Gender = teacher.Gender;
             teacherUpdate.Password = teacher.Password;
             teacherUpdate.ImageUrl = teacher.ImageUrl;

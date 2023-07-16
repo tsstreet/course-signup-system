@@ -2,11 +2,12 @@ global using DemoAPIApp.Data;
 global using Microsoft.EntityFrameworkCore;
 using DemoAPIApp.Controllers;
 using DemoAPIApp.Data.Model;
+using DemoAPIApp.Services.AcademicYearService;
 using DemoAPIApp.Services.AuthService;
+using DemoAPIApp.Services.DepartmentService;
+using DemoAPIApp.Services.FalcutyService;
 using DemoAPIApp.Services.StudentService;
-using DemoAPIApp.Services.StudentServices;
 using DemoAPIApp.Services.TeacherService;
-using DemoAPIApp.Services.TeacherServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,9 @@ builder.Services.AddCors();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IFalcutyService, FalcutyService>();
+builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
 
 var app = builder.Build();
 

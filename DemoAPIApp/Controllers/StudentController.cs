@@ -1,5 +1,5 @@
 ﻿using DemoAPIApp.Data.Model;
-using DemoAPIApp.Services.StudentServices;
+using DemoAPIApp.Services.StudentService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

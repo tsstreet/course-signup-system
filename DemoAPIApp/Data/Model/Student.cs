@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DemoAPIApp.Data.Model
 {
@@ -20,7 +21,7 @@ namespace DemoAPIApp.Data.Model
         public string? Gender { get; set; }
 
         [Required]
-        public DateTime BirthDay { get; set; }
+        public DateTime Dob { get; set; }
         public string? ParentName { get; set; }
         public string? Address { get; set; }
         public string? Phone { get; set; }
@@ -29,8 +30,9 @@ namespace DemoAPIApp.Data.Model
         public string? Email { get; set; }
         public string? ImageUrl { get; set; }
 
-        [Required]
-        public string? Class { get; set;}
+        //[Required]
+        //[ForeignKey("Class")]
+        //public int ClassId { get; set;}
 
         [Required]
         public string? Password { get; set; }

@@ -19,13 +19,11 @@ namespace DemoAPIApp.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     { 
-        private readonly DataContext _context;
         private readonly IAuthService _authService;
         private readonly IConfiguration _configuration;
-        public AuthController(DataContext context, IAuthService authService, IConfiguration configuration)
+        public AuthController(IAuthService authService, IConfiguration configuration)
         {
             _authService = authService;
-            _context = context;
             _configuration = configuration;
         }
 

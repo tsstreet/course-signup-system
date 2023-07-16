@@ -1,0 +1,19 @@
+﻿using DemoAPIApp.Data.Model;
+using NuGet.Protocol.Plugins;
+
+namespace DemoAPIApp.Services.FalcutyService
+{
+    public interface IFalcutyService
+    {
+        Task<List<Falcuty>> GetFalcuties();
+
+        Task<Falcuty> GetFalcutyById(int id);
+
+        Task<Falcuty> AddFalcuty(Falcuty falcuty);
+
+        Task<Falcuty> UpdateFalcuty(int id, Falcuty falcuty);
+
+        Task<Falcuty> DeleteFalcuty(int id);
+
+    }
+}

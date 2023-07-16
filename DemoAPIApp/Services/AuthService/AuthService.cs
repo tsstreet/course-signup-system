@@ -30,7 +30,7 @@ namespace DemoAPIApp.Services.AuthService
                 return null;
             }
 
-            if (student != null)
+            else if (student != null)
             {
                 var token = CreateToken(new User { Id = student.StdId, Username = student.Email, Role = "Student" });
                 var userObj = new User

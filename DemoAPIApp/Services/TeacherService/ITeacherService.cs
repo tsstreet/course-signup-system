@@ -1,7 +1,7 @@
 ﻿using DemoAPIApp.Data.Model;
 using NuGet.Protocol.Plugins;
 
-namespace DemoAPIApp.Services.TeacherServices
+namespace DemoAPIApp.Services.TeacherService
 {
     public interface ITeacherService
     {

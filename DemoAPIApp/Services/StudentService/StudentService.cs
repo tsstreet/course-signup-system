@@ -1,5 +1,5 @@
 ﻿using DemoAPIApp.Data.Model;
-using DemoAPIApp.Services.StudentServices;
+using DemoAPIApp.Services.StudentService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,10 +49,10 @@ namespace DemoAPIApp.Services.StudentService
             studentUpdate.Email = student.Email;
             studentUpdate.Address = student.Address;
             studentUpdate.Phone = student.Phone;
-            studentUpdate.BirthDay = student.BirthDay;
+            studentUpdate.Dob = student.Dob;
             studentUpdate.Gender = student.Gender;
             studentUpdate.ParentName = student.ParentName;
-            studentUpdate.Class = student.Class;
+            //studentUpdate.Class = student.Class;
             studentUpdate.Password = student.Password;
             studentUpdate.ImageUrl = studentUpdate.ImageUrl;
 
