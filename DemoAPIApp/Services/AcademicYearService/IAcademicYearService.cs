@@ -15,5 +15,7 @@ namespace DemoAPIApp.Services.AcademicYearService
 
         Task<AcademicYear> DeleteAcademicYear(int id);
 
+        Task<ICollection<Class>> GetClassByAcademicYear(int id);
+
     }
 }

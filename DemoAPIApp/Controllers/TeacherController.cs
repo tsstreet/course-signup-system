@@ -17,14 +17,14 @@ namespace DemoAPIApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Teacher>> GetTeacher()
+        public async Task<IActionResult> GetTeacher()
         {
             var teacher = await _teacherService.GetTeachers();
             return Ok(teacher);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Teacher>> GetTeacherById(int id)
+        public async Task<IActionResult> GetTeacherById(int id)
         {
             
             var teacher = await _teacherService.GetTeacherById(id);

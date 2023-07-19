@@ -11,6 +11,7 @@ namespace DemoAPIApp.Data.Model
 
         public DbSet<User> Users { get; set; }
 
+        //public DbSet<ClassStudent> ClassStudents { get; set; }
         public DbSet<Assign> Assigns { get; set; }
         public DbSet<AcademicYear> AcademicYears { get; set; }
         public DbSet<Class> Classes { get; set; }

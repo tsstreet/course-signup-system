@@ -1,4 +1,5 @@
-﻿using DemoAPIApp.Data.Model;
+﻿using AutoMapper;
+using DemoAPIApp.Data.Model;
 using DemoAPIApp.Services.ClassService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,32 +12,41 @@ namespace DemoAPIApp.Controllers
     public class ClassController : ControllerBase
     {
         private readonly IClassService _classService;
-        public ClassController(IClassService classService) 
+        private readonly IMapper _mapper;
+        public ClassController(IClassService classService, IMapper mapper) 
         {
             _classService = classService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<Class>> GetClasses()
+        public async Task<IActionResult>GetClasses()
         {
             var getClass = await _classService.GetClasses();
-            return Ok(getClass);
+
+            var getClassDto = _mapper.Map<List<Class>>(getClass);
+
+            return Ok(getClassDto);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Class>> GetClassById(int id)
-        {
-            
+        public async Task<IActionResult> GetClassById(int id)
+        {       
             var getClass = await _classService.GetClassById(id);
+            var getClassDto = _mapper.Map<Class>(getClass);
 
-            return Ok(getClass);
+            return Ok(getClassDto);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Class>> AddClass(Class falcuty)
+        public async Task<IActionResult> AddClass(ClassDto request)
         {
-            var classAdd = await _classService.AddClass(falcuty);
-            return Ok(classAdd);
+            //var classAdd = await _classService.AddClass(classDto);
+
+            var classEntity = _mapper.Map<Class>(request);
+            var classMap = await _classService.AddClass(classEntity);
+            
+            return Ok(classMap);
         }
 
         [HttpPut("{id}")]
@@ -53,6 +63,8 @@ namespace DemoAPIApp.Controllers
 
             return Ok(deleteClass);
         }
+
+        
 
     }
 }

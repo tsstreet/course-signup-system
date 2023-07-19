@@ -27,19 +27,33 @@ namespace DemoAPIApp.Services.ClassService
             return classGet;
         }
 
-        public async Task<Class> AddClass(Class classs)
+        public async Task<Class> AddClass(Class request)
         {
-            var existClass = await _context.Classes.FirstOrDefaultAsync(x => x.ClassName == classs.ClassName );
+            //var academicYear = await _context.AcademicYears.Where(x => x.AcademicYearId == AcademicYearId).FirstOrDefaultAsync();
+            //var department = await _context.Departments.Where(x => x.DepartmentId == DepartmentId).FirstOrDefaultAsync();
+
+            var existClass = await _context.Classes.FirstOrDefaultAsync(x => x.ClassName == request.ClassName);
 
             if (existClass != null)
             {
                 throw new Exception("Class already exist");
             }
 
+            //var newClass = new Class
+            //{
+            //    ClassName = classDto.ClassName,
+            //    AcademicYearId = classDto.AcademicYearId,
+            //    DepartmentId = classDto.DepartmentId,
+            //    Tuition = classDto.Tuition,
+            //    NumOfStd = classDto.NumOfStd,
+            //    Description = classDto.Description,
+            //    ImageUrl = classDto.ImageUrl,
+            //    Active = classDto.Active,
+            //};
 
-            _context.Classes.Add(classs);
+            _context.Classes.Add(request);
             await _context.SaveChangesAsync();
-            return classs;
+            return request;
         }
 
         public async Task<Class> UpdateClass(int id, Class classs)
@@ -67,5 +81,12 @@ namespace DemoAPIApp.Services.ClassService
 
             return classDelete;
         }
+
+        //public async Task<ICollection<Student>> GetStudentByClass(int classId)
+        //{
+        //    var students = await _context.ClassStudents.Where(x => x.ClassId == classId).Select(c => c.Student).ToListAsync();
+
+        //    return students;
+        //}
     }
 }

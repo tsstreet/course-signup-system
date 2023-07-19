@@ -1,12 +1,12 @@
-﻿//namespace DemoAPIApp.Mapper;
-//using DemoAPIApp.Data.Model;
-//using AutoMapper;
-//using System;
+﻿namespace DemoAPIApp.Mapper;
+using DemoAPIApp.Data.Model;
+using AutoMapper;
+using System;
 
-//public class MappingProfile : Profile
-//{
-//    public MappingProfile()
-//    {
-//        CreateMap<User, LoginRequest>();
-//    }
-//}
+public class MappingProfile : Profile
+{
+    public MappingProfile()
+    {
+        CreateMap<ClassDto, Class>();
+    }
+}

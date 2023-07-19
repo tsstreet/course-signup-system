@@ -10,7 +10,7 @@ namespace DemoAPIApp.Data.Model
         [Required]
         public string? Name { get; set; }
 
-        //public ICollection<Class> Classes { get; set; }
+        public ICollection<Class> Classes { get; set; }
         //public ICollection<Subject> Subjects { get; set; }
     }
 }

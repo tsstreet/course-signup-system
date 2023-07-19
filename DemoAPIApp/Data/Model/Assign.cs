@@ -8,17 +8,17 @@ namespace DemoAPIApp.Data.Model
         [Key]
         public int AsignId { get; set; }
 
-        [Required]
-        [ForeignKey("Class")]
-        public int ClassId { get; set; }
+        //[Required]
+        //[ForeignKey("Class")]
+        //public int ClassId { get; set; }
 
-        [Required]
-        [ForeignKey("Subject")]
-        public int SubjectId { get; set; }
+        //[Required]
+        //[ForeignKey("Subject")]
+        //public int SubjectId { get; set; }
 
-        [Required]
-        [ForeignKey("Teacher")]
-        public int TeacherId { get; set; }
+        //[Required]
+        //[ForeignKey("Teacher")]
+        //public int TeacherId { get; set; }
 
         [Required]
         public string? Room { get; set; }

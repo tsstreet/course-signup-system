@@ -3,23 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DemoAPIApp.Data.Model
 {
-    public class Class
+    public class ClassDto
     {
         [Key]
         public int ClassId { get; set; }
 
-        public AcademicYear? AcademicYear { get; set; }
+        [Required]
+        public string? ClassName { get; set; }
 
-        [Required]       
+        [Required]
         public int AcademicYearId { get; set; }
-
-        public Department? Department { get; set; }
 
         [Required]
         public int DepartmentId { get; set; }
-
-        [Required]
-        public string? ClassName { get; set; }
 
         [Required]
         public int NumOfStd { get; set; }
@@ -32,10 +28,5 @@ namespace DemoAPIApp.Data.Model
         public string? ImageUrl { get; set; }
 
         public bool Active { get; set; } = false;
-
-        //public ICollection<ClassStudent> ClassStudents { get; set; }
-
-        //public List<Student> Students { get; set; }
-
     }
 }

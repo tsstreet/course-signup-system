@@ -1,4 +1,5 @@
-﻿using DemoAPIApp.Data.Model;
+﻿using AutoMapper;
+using DemoAPIApp.Data.Model;
 using DemoAPIApp.Services.AcademicYearService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,26 +12,28 @@ namespace DemoAPIApp.Controllers
     public class AcademicYearController : ControllerBase
     {
         private readonly IAcademicYearService _academicYearService;
-        public AcademicYearController(IAcademicYearService academicYearService) 
+        private readonly IMapper _mapper;
+        public AcademicYearController(IAcademicYearService academicYearService, IMapper mapper) 
         {
 
             _academicYearService = academicYearService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<AcademicYear>> GetAcademicYear()
+        public async Task<IActionResult> GetAcademicYear()
         {
-            var falcuty = await _academicYearService.GetAcademicYears();
-            return Ok(falcuty);
+            var academicYear = await _academicYearService.GetAcademicYears();
+            return Ok(academicYear);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<AcademicYear>> GetAcademicYearById(int id)
+        public async Task<IActionResult> GetAcademicYearById(int id)
         {
             
-            var falcuty = await _academicYearService.GetAcademicYearById(id);
+            var academicYear = await _academicYearService.GetAcademicYearById(id);
 
-            return Ok(falcuty);
+            return Ok(academicYear);
         }
 
         [HttpPost]
@@ -55,5 +58,14 @@ namespace DemoAPIApp.Controllers
             return Ok(academicYear);
         }
 
+        [HttpGet("class/{id}")]
+        public async Task<IActionResult> GetClassByAcademicYear(int id)
+        {
+            var getClass = await _academicYearService.GetClassByAcademicYear(id);
+
+            //var getClassDto = _mapper.Map<List<Class>>(getClass);
+
+            return Ok(getClass);
+        }
     }
 }

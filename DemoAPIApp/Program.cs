@@ -4,6 +4,7 @@ using DemoAPIApp.Controllers;
 using DemoAPIApp.Data.Model;
 using DemoAPIApp.Services.AcademicYearService;
 using DemoAPIApp.Services.AuthService;
+using DemoAPIApp.Services.ClassService;
 using DemoAPIApp.Services.DepartmentService;
 using DemoAPIApp.Services.FalcutyService;
 using DemoAPIApp.Services.StudentService;
@@ -22,12 +23,15 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors();
 
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
+builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IFalcutyService, FalcutyService>();

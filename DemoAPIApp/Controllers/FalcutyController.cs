@@ -17,14 +17,14 @@ namespace DemoAPIApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Falcuty>> GetFalcuty()
+        public async Task<IActionResult> GetFalcuty()
         {
             var falcuty = await _falcutyService.GetFalcuties();
             return Ok(falcuty);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Falcuty>> GetFalcutyById(int id)
+        public async Task<IActionResult> GetFalcutyById(int id)
         {
             
             var falcuty = await _falcutyService.GetFalcutyById(id);

@@ -4,6 +4,7 @@ using DemoAPIApp.Data.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DemoAPIApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230718151242_update3")]
+    partial class update3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,6 +94,7 @@ namespace DemoAPIApp.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ClassName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DepartmentId")
@@ -102,8 +106,9 @@ namespace DemoAPIApp.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NumOfStd")
-                        .HasColumnType("int");
+                    b.Property<string>("NumOfStd")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Tuition")
                         .HasColumnType("decimal(18,2)");
@@ -115,6 +120,29 @@ namespace DemoAPIApp.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Classes");
+                });
+
+            modelBuilder.Entity("DemoAPIApp.Data.Model.ClassStudent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("ClassStudents");
                 });
 
             modelBuilder.Entity("DemoAPIApp.Data.Model.Department", b =>
@@ -321,14 +349,43 @@ namespace DemoAPIApp.Migrations
                     b.Navigation("Department");
                 });
 
+            modelBuilder.Entity("DemoAPIApp.Data.Model.ClassStudent", b =>
+                {
+                    b.HasOne("DemoAPIApp.Data.Model.Class", "Class")
+                        .WithMany("ClassStudents")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DemoAPIApp.Data.Model.Student", "Student")
+                        .WithMany("ClassStudents")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("DemoAPIApp.Data.Model.AcademicYear", b =>
                 {
                     b.Navigation("Classes");
                 });
 
+            modelBuilder.Entity("DemoAPIApp.Data.Model.Class", b =>
+                {
+                    b.Navigation("ClassStudents");
+                });
+
             modelBuilder.Entity("DemoAPIApp.Data.Model.Department", b =>
                 {
                     b.Navigation("Classes");
+                });
+
+            modelBuilder.Entity("DemoAPIApp.Data.Model.Student", b =>
+                {
+                    b.Navigation("ClassStudents");
                 });
 #pragma warning restore 612, 618
         }

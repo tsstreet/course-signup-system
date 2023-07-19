@@ -22,9 +22,9 @@ namespace DemoAPIApp.Services.FalcutyService
 
         public async Task<AcademicYear> GetAcademicYearById(int id)
         {
-            var falcuty = await _context.AcademicYears.FindAsync(id);
+            var academicYear = await _context.AcademicYears.FindAsync(id);
 
-            return falcuty;
+            return academicYear;
         }
 
         public async Task<AcademicYear> AddAcademicYear(AcademicYear academicYear)
@@ -62,6 +62,13 @@ namespace DemoAPIApp.Services.FalcutyService
             await _context.SaveChangesAsync();
 
             return academicYear;
+        }
+
+        public async Task<ICollection<Class>> GetClassByAcademicYear(int id)
+        {
+            var classGet = await _context.AcademicYears.Where(x => x.AcademicYearId == id).Select(c => c.Classes).FirstOrDefaultAsync();
+
+            return classGet.ToList();
         }
     }
 }

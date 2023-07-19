@@ -30,11 +30,18 @@ namespace DemoAPIApp.Data.Model
         public string? Email { get; set; }
         public string? ImageUrl { get; set; }
 
-        //[Required]
-        //[ForeignKey("Class")]
-        //public int ClassId { get; set;}
-
         [Required]
         public string? Password { get; set; }
+
+        //public Class? Class { get; set; }
+
+        //[Required]
+        //public int ClassId { get; set; }
+
+
+
+        //public ICollection<ClassStudent> ClassStudents { get; set; }
+
+        //public List<Class> Classes { get; set; }
     }
 }

@@ -17,14 +17,14 @@ namespace DemoAPIApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Department>> GetDepartment()
+        public async Task<IActionResult> GetDepartment()
         {
             var department = await _departmentService.GetDepartments();
             return Ok(department);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Department>> GetDepartmentById(int id)
+        public async Task<IActionResult> GetDepartmentById(int id)
         {
             
             var department = await _departmentService.GetDepartmentById(id);

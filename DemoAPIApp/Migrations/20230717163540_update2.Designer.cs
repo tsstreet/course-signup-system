@@ -4,6 +4,7 @@ using DemoAPIApp.Data.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DemoAPIApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230717163540_update2")]
+    partial class update2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,21 @@ namespace DemoAPIApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ClassStudent", b =>
+                {
+                    b.Property<int>("ClassesClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentsStdId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClassesClassId", "StudentsStdId");
+
+                    b.HasIndex("StudentsStdId");
+
+                    b.ToTable("ClassStudent");
+                });
 
             modelBuilder.Entity("DemoAPIApp.Data.Model.AcademicYear", b =>
                 {
@@ -91,6 +109,7 @@ namespace DemoAPIApp.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ClassName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DepartmentId")
@@ -102,8 +121,9 @@ namespace DemoAPIApp.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NumOfStd")
-                        .HasColumnType("int");
+                    b.Property<string>("NumOfStd")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Tuition")
                         .HasColumnType("decimal(18,2)");
@@ -300,6 +320,21 @@ namespace DemoAPIApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ClassStudent", b =>
+                {
+                    b.HasOne("DemoAPIApp.Data.Model.Class", null)
+                        .WithMany()
+                        .HasForeignKey("ClassesClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DemoAPIApp.Data.Model.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsStdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DemoAPIApp.Data.Model.Class", b =>
