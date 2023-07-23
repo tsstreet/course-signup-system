@@ -33,21 +33,21 @@ namespace DemoAPIApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Falcuty>> AddFalcuty(Falcuty falcuty)
+        public async Task<IActionResult> AddFalcuty(Falcuty falcuty)
         {
             var falcutyAdd = await _falcutyService.AddFalcuty(falcuty);
             return Ok(falcutyAdd);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Falcuty>> UpdateFalcuty(int id, Falcuty falcuty)
+        public async Task<IActionResult> UpdateFalcuty(int id, Falcuty falcuty)
         {
             var falcutyUpdate = await _falcutyService.UpdateFalcuty(id, falcuty);
             return Ok(falcutyUpdate);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Falcuty>> DeleteFalcuty(int id)
+        public async Task<IActionResult> DeleteFalcuty(int id)
         {
             var falcuty = await _falcutyService.DeleteFalcuty(id);
 

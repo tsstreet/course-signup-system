@@ -7,7 +7,9 @@ using DemoAPIApp.Services.AuthService;
 using DemoAPIApp.Services.ClassService;
 using DemoAPIApp.Services.DepartmentService;
 using DemoAPIApp.Services.FalcutyService;
+using DemoAPIApp.Services.ScheduleService;
 using DemoAPIApp.Services.StudentService;
+using DemoAPIApp.Services.SubjectService;
 using DemoAPIApp.Services.TeacherService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +38,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IFalcutyService, FalcutyService>();
 builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddScoped<IScheduleService, ScheduleService>();
 
 var app = builder.Build();
 

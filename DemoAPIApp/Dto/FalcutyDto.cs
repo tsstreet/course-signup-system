@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DemoAPIApp.Data.Model
+namespace DemoAPIApp.Data.Dto
 {
-    public class Falcuty
+    public class FalcutyDto
     {
         [Key]
         public int FalcutyId { get; set; }
@@ -10,6 +10,5 @@ namespace DemoAPIApp.Data.Model
         [Required]
         public string? Name { get; set; }
 
-        public ICollection<Subject> Subjects { get; set; }
     }
 }

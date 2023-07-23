@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Azure.Core;
+using DemoAPIApp.Data.Dto;
 using DemoAPIApp.Data.Model;
 using DemoAPIApp.Services.ClassService;
 using Microsoft.AspNetCore.Http;
@@ -50,14 +52,16 @@ namespace DemoAPIApp.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Class>> UpdateClass(int id, Class classs)
+        public async Task<IActionResult> UpdateClass(int id, ClassDto request)
         {
-            var classUpdate = await _classService.UpdateClass(id, classs);
+            var classEntity = _mapper.Map<Class>(request);
+            var classUpdate = await _classService.UpdateClass(id, classEntity);
+
             return Ok(classUpdate);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Class>> DeleteClass(int id)
+        public async Task<IActionResult> DeleteClass(int id)
         {
             var deleteClass = await _classService.DeleteClass(id);
 

@@ -33,26 +33,35 @@ namespace DemoAPIApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Department>> AddDepartment(Department department)
+        public async Task<IActionResult> AddDepartment(Department department)
         {
             var departmentAdd = await _departmentService.AddDepartment(department);
             return Ok(departmentAdd);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Department>> UpdateDepartment(int id, Department department)
+        public async Task<IActionResult> UpdateDepartment(int id, Department department)
         {
             var departmentUpdate = await _departmentService.UpdateDepartment(id, department);
             return Ok(departmentUpdate);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Department>> DeleteDepartment(int id)
+        public async Task<IActionResult> DeleteDepartment(int id)
         {
             var department = await _departmentService.DeleteDepartment(id);
 
             return Ok(department);
         }
 
+
+        [HttpGet("{id}/subject")]
+        public async Task<IActionResult> GetSubjectByDepartment(int id)
+        {
+            var getSubject = await _departmentService.GetSubjectByDepartment(id);
+
+
+            return Ok(getSubject);
+        }
     }
 }

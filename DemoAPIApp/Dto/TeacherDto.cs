@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DemoAPIApp.Data.Model
+namespace DemoAPIApp.Data.Dto
 {
-    public class Student
+    public class TeacherDto
     {
         [Key]
-        public int StdId { get; set; }
+        public int TeacherId { get; set; }
 
         [Required]
-        public string? StdCode { get; set; }
+        public string? TeacherCode { get; set; }
 
         [Required]
         public string? LastName { get; set; }
@@ -22,26 +22,15 @@ namespace DemoAPIApp.Data.Model
 
         [Required]
         public DateTime Dob { get; set; }
-        public string? ParentName { get; set; }
         public string? Address { get; set; }
+
+        [Required]
         public string? Phone { get; set; }
-
-        [Required]
+        [Required] 
         public string? Email { get; set; }
+
         public string? ImageUrl { get; set; }
-
-        [Required]
         public string? Password { get; set; }
-
-        //public Class? Class { get; set; }
-
-        //[Required]
-        //public int ClassId { get; set; }
-
-
-
-        //public ICollection<ClassStudent> ClassStudents { get; set; }
-
-        public List<Class> Classes { get; set; }
     }
+   
 }

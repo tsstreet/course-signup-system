@@ -62,5 +62,12 @@ namespace DemoAPIApp.Services.DepartmentService
 
             return department;
         }
+
+        public async Task<ICollection<Subject>> GetSubjectByDepartment(int id)
+        {
+            var subjectGet = await _context.Departments.Where(x => x.DepartmentId == id).Select(c => c.Subjects).FirstOrDefaultAsync();
+
+            return subjectGet.ToList();
+        }
     }
 }

@@ -37,28 +37,28 @@ namespace DemoAPIApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AcademicYear>> AddAcademicYear(AcademicYear academicYear)
+        public async Task<IActionResult> AddAcademicYear(AcademicYear academicYear)
         {
             var academicYearAdd = await _academicYearService.AddAcademicYear(academicYear);
             return Ok(academicYearAdd);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<AcademicYear>> UpdateAcademicYear(int id, AcademicYear academicYear)
+        public async Task<IActionResult> UpdateAcademicYear(int id, AcademicYear academicYear)
         {
             var academicYearUpdate = await _academicYearService.UpdateAcademicYear(id, academicYear);
             return Ok(academicYearUpdate);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<AcademicYear>> DeleteAcademicYear(int id)
+        public async Task<IActionResult> DeleteAcademicYear(int id)
         {
             var academicYear = await _academicYearService.DeleteAcademicYear(id);
 
             return Ok(academicYear);
         }
 
-        [HttpGet("class/{id}")]
+        [HttpGet("{id}/class")]
         public async Task<IActionResult> GetClassByAcademicYear(int id)
         {
             var getClass = await _academicYearService.GetClassByAcademicYear(id);

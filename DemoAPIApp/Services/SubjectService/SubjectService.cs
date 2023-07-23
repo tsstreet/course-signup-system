@@ -1,0 +1,70 @@
+﻿using DemoAPIApp.Data.Model;
+using DemoAPIApp.Services.ClassService;
+using DemoAPIApp.Services.SubjectService;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace DemoAPIApp.Services.ClassService
+{
+    public class SubjectService : ISubjectService
+    {
+
+        private readonly DataContext _context;
+
+        public SubjectService(DataContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<List<Subject>> GetSubjects()
+        {
+            return await _context.Subjects.ToListAsync();
+        }
+
+        public async Task<Subject> GetSubjectById(int id)
+        {
+            var subject = await _context.Subjects.FindAsync(id);
+
+            return subject;
+        }
+
+        public async Task<Subject> AddSubject(Subject subject)
+        {
+
+            var existSubject = await _context.Subjects.FirstOrDefaultAsync(x => x.Name == subject.Name);
+
+            if (existSubject != null)
+            {
+                throw new Exception("Subject already exist");
+            }
+
+            _context.Subjects.Add(subject);
+            await _context.SaveChangesAsync();
+            return subject;
+        }
+
+        public async Task<Subject> UpdateSubject(int id, Subject subject)
+        {
+            var subjectUpdate = await _context.Subjects.FindAsync(id);
+
+            subjectUpdate.SubjectCode = subject.SubjectCode;
+            subjectUpdate.Name = subject.Name;
+
+            await _context.SaveChangesAsync();
+
+            return subjectUpdate;
+        }
+
+        public async Task<Subject> DeleteSubject(int id)
+        {
+
+            var subject = await _context.Subjects.FindAsync(id);
+
+            _context.Subjects.Remove(subject);
+
+            await _context.SaveChangesAsync();
+
+            return subject;
+        }
+    }
+}

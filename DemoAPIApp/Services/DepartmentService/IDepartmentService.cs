@@ -15,5 +15,7 @@ namespace DemoAPIApp.Services.DepartmentService
 
         Task<Department> DeleteDepartment(int id);
 
+        Task<ICollection<Subject>> GetSubjectByDepartment(int id);
+
     }
 }

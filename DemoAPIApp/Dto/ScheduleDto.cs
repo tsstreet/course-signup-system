@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DemoAPIApp.Data.Model
+namespace DemoAPIApp.Data.Dto
 {
-    public class Assign
+    public class ScheduleDto
     {
         [Key]
-        public int AsignId { get; set; }
+        public int ScheduleId { get; set; }
 
         //[Required]
         //[ForeignKey("Class")]

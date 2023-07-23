@@ -11,6 +11,8 @@ namespace DemoAPIApp.Data.Model
         public string? Name { get; set; }
 
         public ICollection<Class> Classes { get; set; }
+
+        public ICollection<Subject> Subjects { get; set; }
         //public ICollection<Subject> Subjects { get; set; }
     }
 }

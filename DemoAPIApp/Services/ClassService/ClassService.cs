@@ -56,14 +56,17 @@ namespace DemoAPIApp.Services.ClassService
             return request;
         }
 
-        public async Task<Class> UpdateClass(int id, Class classs)
+        public async Task<Class> UpdateClass(int id, Class request)
         {
             var classUpdate = await _context.Classes.FindAsync(id);
 
-            classUpdate.ClassName = classs.ClassName;
-            classUpdate.NumOfStd = classs.NumOfStd;
-            classUpdate.Active = classs.Active;
-            classUpdate.Description = classs.Description;
+            classUpdate.ClassName = request.ClassName;
+            classUpdate.NumOfStd = request.NumOfStd;
+            classUpdate.AcademicYearId = request.AcademicYearId;
+            classUpdate.DepartmentId = request.DepartmentId;
+            classUpdate.Active = request.Active;
+            classUpdate.Description = request.Description;
+            classUpdate.Tuition = request.Tuition;
 
             await _context.SaveChangesAsync();
 

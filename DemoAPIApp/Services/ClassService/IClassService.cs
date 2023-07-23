@@ -11,7 +11,7 @@ namespace DemoAPIApp.Services.ClassService
 
         Task<Class> AddClass(Class request);
 
-        Task<Class> UpdateClass(int id, Class classs);
+        Task<Class> UpdateClass(int id, Class request);
 
         Task<Class> DeleteClass(int id);
 

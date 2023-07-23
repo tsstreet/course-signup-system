@@ -35,7 +35,7 @@ namespace DemoAPIApp.Data.Model
 
         //public ICollection<ClassStudent> ClassStudents { get; set; }
 
-        //public List<Student> Students { get; set; }
+        public List<Student> Students { get; set; }
 
     }
 }

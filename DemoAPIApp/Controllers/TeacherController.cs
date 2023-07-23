@@ -33,21 +33,21 @@ namespace DemoAPIApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Teacher>> AddTeacher(Teacher teacher)
+        public async Task<IActionResult> AddTeacher(Teacher teacher)
         {
             var teacherAdd = await _teacherService.AddTeacher(teacher);
             return Ok(teacherAdd);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Teacher>> UpdateTeacher(int id, Teacher teacher)
+        public async Task<IActionResult> UpdateTeacher(int id, Teacher teacher)
         {
             var teacherUpdate = await _teacherService.UpdateTeacher(id, teacher);
             return Ok(teacherUpdate);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Teacher>> DeleteStuden(int id)
+        public async Task<IActionResult> DeleteStuden(int id)
         {
             var teacher = await _teacherService.DeleteTeacher(id);
 

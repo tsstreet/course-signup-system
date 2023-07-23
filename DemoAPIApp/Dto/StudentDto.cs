@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DemoAPIApp.Data.Model
+namespace DemoAPIApp.Data.Dto
 {
-    public class Student
+    public class StudentDto
     {
         [Key]
         public int StdId { get; set; }
@@ -32,16 +32,5 @@ namespace DemoAPIApp.Data.Model
 
         [Required]
         public string? Password { get; set; }
-
-        //public Class? Class { get; set; }
-
-        //[Required]
-        //public int ClassId { get; set; }
-
-
-
-        //public ICollection<ClassStudent> ClassStudents { get; set; }
-
-        public List<Class> Classes { get; set; }
     }
 }

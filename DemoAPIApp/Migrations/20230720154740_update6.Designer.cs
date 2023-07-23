@@ -4,6 +4,7 @@ using DemoAPIApp.Data.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DemoAPIApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230720154740_update6")]
+    partial class update6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,6 +59,39 @@ namespace DemoAPIApp.Migrations
                     b.HasKey("AcademicYearId");
 
                     b.ToTable("AcademicYears");
+                });
+
+            modelBuilder.Entity("DemoAPIApp.Data.Model.Assign", b =>
+                {
+                    b.Property<int>("AsignId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AsignId"));
+
+                    b.Property<string>("Day")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Room")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("TimeEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("TimeStart")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("AsignId");
+
+                    b.ToTable("Assigns");
                 });
 
             modelBuilder.Entity("DemoAPIApp.Data.Model.Class", b =>
@@ -149,39 +185,6 @@ namespace DemoAPIApp.Migrations
                     b.ToTable("Falcuties");
                 });
 
-            modelBuilder.Entity("DemoAPIApp.Data.Model.Schedule", b =>
-                {
-                    b.Property<int>("ScheduleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleId"));
-
-                    b.Property<string>("Day")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Room")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("TimeEnd")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("TimeStart")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ScheduleId");
-
-                    b.ToTable("Schedules");
-                });
-
             modelBuilder.Entity("DemoAPIApp.Data.Model.Student", b =>
                 {
                     b.Property<int>("StdId")
@@ -242,12 +245,6 @@ namespace DemoAPIApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubjectId"));
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FalcutyId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -257,10 +254,6 @@ namespace DemoAPIApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SubjectId");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.HasIndex("FalcutyId");
 
                     b.ToTable("Subjects");
                 });
@@ -396,25 +389,6 @@ namespace DemoAPIApp.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("DemoAPIApp.Data.Model.Subject", b =>
-                {
-                    b.HasOne("DemoAPIApp.Data.Model.Department", "Department")
-                        .WithMany("Subjects")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DemoAPIApp.Data.Model.Falcuty", "Falcuty")
-                        .WithMany("Subjects")
-                        .HasForeignKey("FalcutyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-
-                    b.Navigation("Falcuty");
-                });
-
             modelBuilder.Entity("DemoAPIApp.Data.Model.AcademicYear", b =>
                 {
                     b.Navigation("Classes");
@@ -423,13 +397,6 @@ namespace DemoAPIApp.Migrations
             modelBuilder.Entity("DemoAPIApp.Data.Model.Department", b =>
                 {
                     b.Navigation("Classes");
-
-                    b.Navigation("Subjects");
-                });
-
-            modelBuilder.Entity("DemoAPIApp.Data.Model.Falcuty", b =>
-                {
-                    b.Navigation("Subjects");
                 });
 #pragma warning restore 612, 618
         }
