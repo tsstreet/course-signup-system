@@ -22,14 +22,19 @@ namespace DemoAPIApp.Data.Dto
 
         [Required]
         public DateTime Dob { get; set; }
+
         public string? Address { get; set; }
 
         [Required]
         public string? Phone { get; set; }
-        [Required] 
+        [Required]
         public string? Email { get; set; }
 
         public string? ImageUrl { get; set; }
+
+        [Required]
+        public string? MainSubject { get; set; }
+
         public string? Password { get; set; }
     }
    

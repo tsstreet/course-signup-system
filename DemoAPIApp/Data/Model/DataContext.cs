@@ -10,6 +10,11 @@ namespace DemoAPIApp.Data.Model
         {
             modelBuilder.Entity<ClassStudent>()
                 .HasKey(cs => new { cs.ClassId, cs.StudentId });
+
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
         }
 
         public DbSet<Student> Students { get; set; }

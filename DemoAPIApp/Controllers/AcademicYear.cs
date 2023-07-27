@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Azure.Core;
+using DemoAPIApp.Data.Dto;
 using DemoAPIApp.Data.Model;
 using DemoAPIApp.Services.AcademicYearService;
 using Microsoft.AspNetCore.Http;
@@ -24,7 +26,10 @@ namespace DemoAPIApp.Controllers
         public async Task<IActionResult> GetAcademicYear()
         {
             var academicYear = await _academicYearService.GetAcademicYears();
-            return Ok(academicYear);
+
+            var academicYearDto = _mapper.Map<List<AcademicYear>>(academicYear);
+
+            return Ok(academicYearDto);
         }
 
         [HttpGet("{id}")]
@@ -33,21 +38,27 @@ namespace DemoAPIApp.Controllers
             
             var academicYear = await _academicYearService.GetAcademicYearById(id);
 
-            return Ok(academicYear);
+            var academicYearDto = _mapper.Map<AcademicYear>(academicYear);
+
+            return Ok(academicYearDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAcademicYear(AcademicYear academicYear)
-        {
-            var academicYearAdd = await _academicYearService.AddAcademicYear(academicYear);
-            return Ok(academicYearAdd);
+        public async Task<IActionResult> AddAcademicYear(AcademicYearDto academicYear)
+        {         
+            var academicYearAdd = _mapper.Map<AcademicYear>(academicYear);
+            var academicYearMap = await _academicYearService.AddAcademicYear(academicYearAdd);
+
+            return Ok(academicYearMap);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAcademicYear(int id, AcademicYear academicYear)
+        public async Task<IActionResult> UpdateAcademicYear(int id, AcademicYearDto academicYear)
         {
-            var academicYearUpdate = await _academicYearService.UpdateAcademicYear(id, academicYear);
-            return Ok(academicYearUpdate);
+            var academicYearUpdate = _mapper.Map<AcademicYear>(academicYear);
+            var academicYearMap = await _academicYearService.UpdateAcademicYear(id, academicYearUpdate);
+
+            return Ok(academicYearMap);
         }
 
         [HttpDelete("{id}")]

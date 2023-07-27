@@ -85,11 +85,21 @@ namespace DemoAPIApp.Services.ClassService
             return classDelete;
         }
 
-        //public async Task<ICollection<Student>> GetStudentByClass(int classId)
-        //{
-        //    var students = await _context.ClassStudents.Where(x => x.ClassId == classId).Select(c => c.Student).ToListAsync();
+        public async Task<ICollection<Student>> GetStudentByClass(int classId)
+        {
+            var students = await _context.ClassStudents.Where(x => x.ClassId == classId).Select(c => c.Student).ToListAsync();
 
-        //    return students;
-        //}
+            return students;
+        }
+
+        public async Task<ICollection<Subject>> GetSubjectByClass(int id)
+        {
+            var subjects = await _context.Classes
+                                    .Where(c => c.ClassId == id)
+                                    .SelectMany(c => c.Schedules)
+                                    .Select(s => s.Subject)
+                                    .ToListAsync();
+            return subjects;
+        }
     }
 }

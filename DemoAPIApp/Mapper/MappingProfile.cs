@@ -11,5 +11,11 @@ public class MappingProfile : Profile
         CreateMap<ClassDto, Class>();
         CreateMap<SubjectDto, Subject>();
         CreateMap<ScheduleDto, Schedule>();
+        CreateMap<DepartmentDto, Department>();
+        CreateMap<AcademicYearDto, AcademicYear>();
+        CreateMap<FalcutyDto, Falcuty>();
+        CreateMap<StudentDto, Student>();
+        CreateMap<Student, StudentDto>();
+        CreateMap<TeacherDto, Teacher>();
     }
 }

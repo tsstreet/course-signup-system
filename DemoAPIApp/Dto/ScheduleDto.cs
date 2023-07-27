@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DemoAPIApp.Data.Model;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DemoAPIApp.Data.Dto
@@ -8,17 +9,14 @@ namespace DemoAPIApp.Data.Dto
         [Key]
         public int ScheduleId { get; set; }
 
-        //[Required]
-        //[ForeignKey("Class")]
-        //public int ClassId { get; set; }
+        [Required]
+        public int ClassId { get; set; }
 
-        //[Required]
-        //[ForeignKey("Subject")]
-        //public int SubjectId { get; set; }
+        [Required]
+        public int SubjectId { get; set; }
 
-        //[Required]
-        //[ForeignKey("Teacher")]
-        //public int TeacherId { get; set; }
+        [Required]
+        public int TeacherId { get; set; }
 
         [Required]
         public string? Room { get; set; }

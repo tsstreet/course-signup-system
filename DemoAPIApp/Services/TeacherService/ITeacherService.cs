@@ -15,5 +15,7 @@ namespace DemoAPIApp.Services.TeacherService
 
         Task<Teacher> DeleteTeacher(int id);
 
+        Task<ICollection<Schedule>> GetScheduleByTeacher(int id);
+
     }
 }

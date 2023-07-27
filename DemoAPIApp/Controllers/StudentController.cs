@@ -1,4 +1,6 @@
-﻿using DemoAPIApp.Data.Model;
+﻿using AutoMapper;
+using DemoAPIApp.Data.Dto;
+using DemoAPIApp.Data.Model;
 using DemoAPIApp.Services.StudentService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,38 +13,52 @@ namespace DemoAPIApp.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _studentService;
-        public StudentController (IStudentService studentService) 
+        private readonly IMapper _mapper;
+
+        public StudentController (IStudentService studentService, IMapper mapper) 
         {
             _studentService = studentService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetStudent()
         {
             var student = await _studentService.GetStudents();
-            return Ok(student);
+
+            var studentDto = _mapper.Map<List<Student>>(student);
+
+            return Ok(studentDto);
+
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStudentById(int id)
         {
-            
             var student = await _studentService.GetStudentById(id);
 
-            return Ok(student);
+            var studentDto = _mapper.Map<Student>(student);
+
+            return Ok(studentDto);
+
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddStudent(Student student)
+        public async Task<IActionResult> AddStudent(StudentDto student, int classId)
         {
-            var studentAdd = await _studentService.AddStudent(student);
-            return Ok(studentAdd);
+            var studentDto = _mapper.Map<Student>(student);
+            var addedStudent = await _studentService.AddStudent(studentDto, classId);
+            var addedStudentDto = _mapper.Map<StudentDto>(addedStudent);
+
+            return Ok(addedStudentDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateStudent(int id, Student student)
+        public async Task<IActionResult> UpdateStudent(int id, StudentDto student)
         {
-            var studentUpdate = await _studentService.UpdateStudent(id, student);
+            var studentEntity = _mapper.Map<Student>(student);
+            var studentUpdate = await _studentService.UpdateStudent(id, studentEntity);
+            
             return Ok(studentUpdate);
         }
 
@@ -54,5 +70,27 @@ namespace DemoAPIApp.Controllers
             return Ok(student);
         }
 
+        [HttpGet("{id}/class")]
+        public async Task<IActionResult> GetClassByStudent(int id)
+        {
+            var getClass = await _studentService.GetClassesByStudent(id);
+            return Ok(getClass);
+        }
+
+        [HttpPost("class register")]
+        public async Task<IActionResult> RegisterStudentForClass(int studentId, int classId)
+        {
+            var studentAdd = await _studentService.RegisterStudentForClass(studentId, classId);
+            return Ok(studentAdd);
+        }
+
+        [HttpDelete("class unregister")]
+        public async Task<IActionResult> UnregisterStudentFromClass(int studentId, int classId)
+        {
+            var unregister = await _studentService.UnregisterStudentFromClass(studentId, classId);
+
+            return Ok(unregister);
+        }
     }
 }
+

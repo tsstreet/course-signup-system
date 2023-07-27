@@ -1,4 +1,6 @@
-﻿using DemoAPIApp.Data.Model;
+﻿using AutoMapper;
+using DemoAPIApp.Data.Dto;
+using DemoAPIApp.Data.Model;
 using DemoAPIApp.Services.DepartmentService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,39 +13,54 @@ namespace DemoAPIApp.Controllers
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
-        public DepartmentController(IDepartmentService departmentService) 
+        private readonly IMapper _mapper;
+
+        public DepartmentController(IDepartmentService departmentService, IMapper mapper) 
         {
             _departmentService = departmentService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDepartment()
+        public async Task<IActionResult> GetDepartments()
         {
             var department = await _departmentService.GetDepartments();
-            return Ok(department);
+
+            var departmentDto = _mapper.Map<List<Department>>(department);
+
+            return Ok(departmentDto);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDepartmentById(int id)
         {
-            
             var department = await _departmentService.GetDepartmentById(id);
 
-            return Ok(department);
+            var departmentDto = _mapper.Map<Department>(department);
+
+            return Ok(departmentDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddDepartment(Department department)
+        public async Task<IActionResult> AddDepartment(DepartmentDto department)
         {
-            var departmentAdd = await _departmentService.AddDepartment(department);
-            return Ok(departmentAdd);
+
+            var departmentAdd = _mapper.Map<Department>(department);
+
+            var departmentMap = await _departmentService.AddDepartment(departmentAdd);
+
+            return Ok(departmentMap);
+
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDepartment(int id, Department department)
+        public async Task<IActionResult> UpdateDepartment(int id, DepartmentDto department)
         {
-            var departmentUpdate = await _departmentService.UpdateDepartment(id, department);
-            return Ok(departmentUpdate);
+            var departmentUpdate = _mapper.Map<Department>(department);
+
+            var departmentMap = await _departmentService.AddDepartment(departmentUpdate);
+
+            return Ok(departmentMap);
         }
 
         [HttpDelete("{id}")]

@@ -23,7 +23,6 @@ namespace DemoAPIApp.Data.Model
         [Required]
         public DateTime Dob { get; set; }
 
-
         public string? Address { get; set; }
 
         [Required]
@@ -33,10 +32,12 @@ namespace DemoAPIApp.Data.Model
 
         public string? ImageUrl { get; set; }
 
-        //[Required]
-        //[ForeignKey("Subject")]
-        //public int SubjectId { get; set; }
+        [Required]
+        public string? MainSubject { get; set; }
+
         public string? Password { get; set; }
+
+        public ICollection<Schedule> Schedules { get; set; }
     }
    
 }

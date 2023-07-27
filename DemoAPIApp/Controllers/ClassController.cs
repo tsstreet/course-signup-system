@@ -68,7 +68,21 @@ namespace DemoAPIApp.Controllers
             return Ok(deleteClass);
         }
 
-        
+        [HttpGet("{id}/subject")]
+        public async Task<IActionResult> GetSubjectByClass(int id)
+        {
+            var subject = await _classService.GetSubjectByClass(id);
 
+            return Ok(subject);
+        }
+
+        [HttpGet("{id}/student")]
+        public async Task<IActionResult> GetStudentByClass(int id)
+        {
+            var student = await _classService.GetStudentByClass(id);
+            return Ok(student);
+        }
+
+       
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DemoAPIApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230723134751_update7")]
-    partial class update7
+    [Migration("20230725152122_update2")]
+    partial class update2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,6 +160,9 @@ namespace DemoAPIApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleId"));
 
+                    b.Property<int?>("ClassId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Day")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -174,6 +177,12 @@ namespace DemoAPIApp.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("SubjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TeacherId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("TimeEnd")
                         .HasColumnType("datetime2");
 
@@ -181,6 +190,12 @@ namespace DemoAPIApp.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("ScheduleId");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Schedules");
                 });
@@ -245,6 +260,9 @@ namespace DemoAPIApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubjectId"));
 
+                    b.Property<int?>("ClassId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
@@ -260,6 +278,8 @@ namespace DemoAPIApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SubjectId");
+
+                    b.HasIndex("ClassId");
 
                     b.HasIndex("DepartmentId");
 
@@ -301,6 +321,9 @@ namespace DemoAPIApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("MainSubject")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
@@ -308,11 +331,16 @@ namespace DemoAPIApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("SubjectId")
+                        .HasColumnType("int");
+
                     b.Property<string>("TeacherCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TeacherId");
+
+                    b.HasIndex("SubjectId");
 
                     b.ToTable("Teachers");
                 });
@@ -399,8 +427,33 @@ namespace DemoAPIApp.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("DemoAPIApp.Data.Model.Schedule", b =>
+                {
+                    b.HasOne("DemoAPIApp.Data.Model.Class", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId");
+
+                    b.HasOne("DemoAPIApp.Data.Model.Subject", "Subject")
+                        .WithMany("Schedules")
+                        .HasForeignKey("SubjectId");
+
+                    b.HasOne("DemoAPIApp.Data.Model.Teacher", "Teacher")
+                        .WithMany("Schedules")
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Subject");
+
+                    b.Navigation("Teacher");
+                });
+
             modelBuilder.Entity("DemoAPIApp.Data.Model.Subject", b =>
                 {
+                    b.HasOne("DemoAPIApp.Data.Model.Class", null)
+                        .WithMany("Subjects")
+                        .HasForeignKey("ClassId");
+
                     b.HasOne("DemoAPIApp.Data.Model.Department", "Department")
                         .WithMany("Subjects")
                         .HasForeignKey("DepartmentId")
@@ -418,9 +471,21 @@ namespace DemoAPIApp.Migrations
                     b.Navigation("Falcuty");
                 });
 
+            modelBuilder.Entity("DemoAPIApp.Data.Model.Teacher", b =>
+                {
+                    b.HasOne("DemoAPIApp.Data.Model.Subject", null)
+                        .WithMany("Teachers")
+                        .HasForeignKey("SubjectId");
+                });
+
             modelBuilder.Entity("DemoAPIApp.Data.Model.AcademicYear", b =>
                 {
                     b.Navigation("Classes");
+                });
+
+            modelBuilder.Entity("DemoAPIApp.Data.Model.Class", b =>
+                {
+                    b.Navigation("Subjects");
                 });
 
             modelBuilder.Entity("DemoAPIApp.Data.Model.Department", b =>
@@ -433,6 +498,18 @@ namespace DemoAPIApp.Migrations
             modelBuilder.Entity("DemoAPIApp.Data.Model.Falcuty", b =>
                 {
                     b.Navigation("Subjects");
+                });
+
+            modelBuilder.Entity("DemoAPIApp.Data.Model.Subject", b =>
+                {
+                    b.Navigation("Schedules");
+
+                    b.Navigation("Teachers");
+                });
+
+            modelBuilder.Entity("DemoAPIApp.Data.Model.Teacher", b =>
+                {
+                    b.Navigation("Schedules");
                 });
 #pragma warning restore 612, 618
         }

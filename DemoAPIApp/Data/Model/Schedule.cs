@@ -8,20 +8,20 @@ namespace DemoAPIApp.Data.Model
         [Key]
         public int ScheduleId { get; set; }
 
-        //[Required]
-        //[ForeignKey("Class")]
-        //public int ClassId { get; set; }
-
-        //[Required]
-        //[ForeignKey("Subject")]
-        //public int SubjectId { get; set; }
-
-        //[Required]
-        //[ForeignKey("Teacher")]
-        //public int TeacherId { get; set; }
+        [Required]
+        public int ClassId { get; set; }
+        public Class Class { get; set; }
 
         [Required]
-        public string? Room { get; set; }
+        public int SubjectId { get; set; }
+        public Subject Subject { get; set; }
+
+        [Required]
+        public int TeacherId { get; set; }
+        public Teacher Teacher { get; set; }
+
+        [Required]
+        public string Room { get; set; }
 
         [Required]
         public DateTime TimeStart { get; set; }
@@ -36,7 +36,7 @@ namespace DemoAPIApp.Data.Model
         public DateTime EndDate { get; set; }
 
         [Required]
-        public string? Day { get; set; }
+        public string Day { get; set; }
 
     }
 }

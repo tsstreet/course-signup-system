@@ -32,16 +32,8 @@ namespace DemoAPIApp.Data.Model
 
         [Required]
         public string? Password { get; set; }
-
-        //public Class? Class { get; set; }
-
-        //[Required]
-        //public int ClassId { get; set; }
-
-
-
-        //public ICollection<ClassStudent> ClassStudents { get; set; }
-
-        public List<Class> Classes { get; set; }
+        public ICollection<ClassStudent> ClassStudents { get; set; }
     }
 }
+    
+

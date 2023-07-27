@@ -14,9 +14,6 @@ namespace DemoAPIApp.Data.Model
         [Required]
         public string? Name { get; set; }
 
-        //[Required]
-        //[ForeignKey("Department")]
-        //public int DepartmentId { get; set; }
         public Department? Department { get; set; }
 
         [Required]
@@ -26,7 +23,7 @@ namespace DemoAPIApp.Data.Model
         [Required]
         public int FalcutyId { get; set; }
 
-        //public ICollection<Teacher> Teachers { get; set; }
+        public ICollection<Schedule> Schedules { get; set; }
 
     }
 }

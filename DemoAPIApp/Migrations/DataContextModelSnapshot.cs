@@ -157,6 +157,9 @@ namespace DemoAPIApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleId"));
 
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Day")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -171,6 +174,12 @@ namespace DemoAPIApp.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("TimeEnd")
                         .HasColumnType("datetime2");
 
@@ -178,6 +187,12 @@ namespace DemoAPIApp.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("ScheduleId");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Schedules");
                 });
@@ -242,6 +257,9 @@ namespace DemoAPIApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubjectId"));
 
+                    b.Property<int?>("ClassId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
@@ -257,6 +275,8 @@ namespace DemoAPIApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SubjectId");
+
+                    b.HasIndex("ClassId");
 
                     b.HasIndex("DepartmentId");
 
@@ -296,6 +316,9 @@ namespace DemoAPIApp.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MainSubject")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -348,13 +371,13 @@ namespace DemoAPIApp.Migrations
                     b.HasOne("DemoAPIApp.Data.Model.Class", null)
                         .WithMany()
                         .HasForeignKey("ClassesClassId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DemoAPIApp.Data.Model.Student", null)
                         .WithMany()
                         .HasForeignKey("StudentsStdId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -363,13 +386,13 @@ namespace DemoAPIApp.Migrations
                     b.HasOne("DemoAPIApp.Data.Model.AcademicYear", "AcademicYear")
                         .WithMany("Classes")
                         .HasForeignKey("AcademicYearId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DemoAPIApp.Data.Model.Department", "Department")
                         .WithMany("Classes")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AcademicYear");
@@ -382,13 +405,13 @@ namespace DemoAPIApp.Migrations
                     b.HasOne("DemoAPIApp.Data.Model.Class", "Class")
                         .WithMany()
                         .HasForeignKey("ClassId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DemoAPIApp.Data.Model.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Class");
@@ -396,18 +419,50 @@ namespace DemoAPIApp.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("DemoAPIApp.Data.Model.Schedule", b =>
+                {
+                    b.HasOne("DemoAPIApp.Data.Model.Class", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DemoAPIApp.Data.Model.Subject", "Subject")
+                        .WithMany("Schedules")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DemoAPIApp.Data.Model.Teacher", "Teacher")
+                        .WithMany("Schedules")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Subject");
+
+                    b.Navigation("Teacher");
+                });
+
             modelBuilder.Entity("DemoAPIApp.Data.Model.Subject", b =>
                 {
+                    b.HasOne("DemoAPIApp.Data.Model.Class", null)
+                        .WithMany("Subjects")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("DemoAPIApp.Data.Model.Department", "Department")
                         .WithMany("Subjects")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DemoAPIApp.Data.Model.Falcuty", "Falcuty")
                         .WithMany("Subjects")
                         .HasForeignKey("FalcutyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Department");
@@ -420,6 +475,11 @@ namespace DemoAPIApp.Migrations
                     b.Navigation("Classes");
                 });
 
+            modelBuilder.Entity("DemoAPIApp.Data.Model.Class", b =>
+                {
+                    b.Navigation("Subjects");
+                });
+
             modelBuilder.Entity("DemoAPIApp.Data.Model.Department", b =>
                 {
                     b.Navigation("Classes");
@@ -430,6 +490,16 @@ namespace DemoAPIApp.Migrations
             modelBuilder.Entity("DemoAPIApp.Data.Model.Falcuty", b =>
                 {
                     b.Navigation("Subjects");
+                });
+
+            modelBuilder.Entity("DemoAPIApp.Data.Model.Subject", b =>
+                {
+                    b.Navigation("Schedules");
+                });
+
+            modelBuilder.Entity("DemoAPIApp.Data.Model.Teacher", b =>
+                {
+                    b.Navigation("Schedules");
                 });
 #pragma warning restore 612, 618
         }

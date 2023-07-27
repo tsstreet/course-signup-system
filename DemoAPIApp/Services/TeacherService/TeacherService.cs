@@ -72,5 +72,12 @@ namespace DemoAPIApp.Services.TeacherService
             return teacher;
         }
 
+        public async Task<ICollection<Schedule>> GetScheduleByTeacher(int id)
+        {
+            var schedule = await _context.Teachers.Where(x => x.TeacherId == id).Select(c => c.Schedules).FirstOrDefaultAsync();
+
+            return schedule.ToList();
+        }
+
     }
 }

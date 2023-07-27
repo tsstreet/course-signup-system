@@ -47,6 +47,8 @@ namespace DemoAPIApp.Services.FalcutyService
             var academicYearUpdate = await _context.AcademicYears.FindAsync(id);
 
             academicYearUpdate.Name = academicYear.Name;
+            academicYearUpdate.AcademicYearCode = academicYear.AcademicYearCode;
+
             await _context.SaveChangesAsync();
 
             return academicYearUpdate;

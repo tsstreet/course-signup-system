@@ -33,9 +33,9 @@ namespace DemoAPIApp.Data.Model
 
         public bool Active { get; set; } = false;
 
-        //public ICollection<ClassStudent> ClassStudents { get; set; }
+        public ICollection<ClassStudent> ClassStudents { get; set; }
 
-        public List<Student> Students { get; set; }
+        public ICollection<Schedule> Schedules { get; set; }
 
     }
 }

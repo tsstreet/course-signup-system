@@ -1,4 +1,6 @@
-﻿using DemoAPIApp.Data.Model;
+﻿using AutoMapper;
+using DemoAPIApp.Data.Dto;
+using DemoAPIApp.Data.Model;
 using DemoAPIApp.Services.FalcutyService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,39 +13,54 @@ namespace DemoAPIApp.Controllers
     public class FalcutyController : ControllerBase
     {
         private readonly IFalcutyService _falcutyService;
-        public FalcutyController(IFalcutyService falcutyService) 
+        private readonly IMapper _mapper;
+        public FalcutyController(IFalcutyService falcutyService, IMapper mapper) 
         {
             _falcutyService = falcutyService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetFalcuty()
         {
             var falcuty = await _falcutyService.GetFalcuties();
-            return Ok(falcuty);
+
+            var falcutyDto = _mapper.Map<List<Falcuty>>(falcuty);
+
+            return Ok(falcutyDto);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetFalcutyById(int id)
         {
-            
             var falcuty = await _falcutyService.GetFalcutyById(id);
 
-            return Ok(falcuty);
+            var falcutyDto = _mapper.Map<Falcuty>(falcuty);
+
+            return Ok(falcutyDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddFalcuty(Falcuty falcuty)
+        public async Task<IActionResult> AddFalcuty(FalcutyDto falcuty)
         {
-            var falcutyAdd = await _falcutyService.AddFalcuty(falcuty);
-            return Ok(falcutyAdd);
+
+            var falcutyAdd= _mapper.Map<Falcuty>(falcuty);
+
+            var falcutyMap = await _falcutyService.AddFalcuty(falcutyAdd);
+
+            return Ok(falcutyMap);
+
+
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateFalcuty(int id, Falcuty falcuty)
+        public async Task<IActionResult> UpdateFalcuty(int id, FalcutyDto falcuty)
         {
-            var falcutyUpdate = await _falcutyService.UpdateFalcuty(id, falcuty);
-            return Ok(falcutyUpdate);
+            var falcutyUpdate = _mapper.Map<Falcuty>(falcuty);
+
+            var falcutyMap = await _falcutyService.UpdateFalcuty(id, falcutyUpdate);
+
+            return Ok(falcutyMap);
         }
 
         [HttpDelete("{id}")]
