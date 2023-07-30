@@ -1,4 +1,5 @@
 ﻿using DemoAPIApp.Data.Model;
+using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;
 
 namespace DemoAPIApp.Services.TeacherService
@@ -17,5 +18,6 @@ namespace DemoAPIApp.Services.TeacherService
 
         Task<ICollection<Schedule>> GetScheduleByTeacher(int id);
 
+        Task<ActionResult<List<Teacher>>> Search(string searchString);
     }
 }

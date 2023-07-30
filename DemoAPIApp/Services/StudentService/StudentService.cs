@@ -53,6 +53,20 @@ namespace DemoAPIApp.Services.StudentService
             return student;
         }
 
+        public async Task<Student> RegisterStudent(Student student)
+        {
+            var existStudent = await _context.Students.FirstOrDefaultAsync(x => x.Email == student.Email);
+      
+            if (existStudent != null)
+            {
+                throw new Exception("Email already exist");
+            }
+
+            _context.Students.Add(student);
+            await _context.SaveChangesAsync();
+            return student;
+        }
+
         public async Task<Student> UpdateStudent(int id, Student student)
         {
             var studentUpdate = await _context.Students.FindAsync(id);
@@ -134,6 +148,33 @@ namespace DemoAPIApp.Services.StudentService
             }
 
             return true;
+        }
+
+        public async Task<ICollection<Schedule>> GetStudentSchedule(int id)
+        {
+            var schedule = await _context.ClassStudents
+                                .Where(cs => cs.StudentId == id)
+                                .Select(cs => cs.Class)
+                                .SelectMany(c => c.Schedules)
+                                .ToListAsync();
+            return schedule;
+        }
+
+        public async Task<ActionResult<List<Student>>> Search(string searchString)
+        {
+            var students = from s in _context.Students
+                           select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                students = students.Where(s => s.FullName.ToLower().Contains(searchString.ToLower())
+                                           || s.LastName.ToLower().Contains(searchString.ToLower())
+                                           || s.Email.ToLower().Contains(searchString.ToLower())
+                                           || s.StdCode.ToLower().Contains(searchString.ToLower())
+                                           || s.Phone.Contains(searchString));
+            }
+
+            return await students.ToListAsync();
         }
     }
 }

@@ -73,5 +73,13 @@ namespace DemoAPIApp.Controllers
 
             return Ok(schedule);
         }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var teachers = await _teacherService.Search(searchString);
+
+            return Ok(teachers);
+        }
     }
 }

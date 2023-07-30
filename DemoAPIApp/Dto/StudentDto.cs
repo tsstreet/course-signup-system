@@ -21,6 +21,7 @@ namespace DemoAPIApp.Data.Dto
         public string? Gender { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         public DateTime Dob { get; set; }
         public string? ParentName { get; set; }
         public string? Address { get; set; }

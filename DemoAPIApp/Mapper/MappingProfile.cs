@@ -15,6 +15,7 @@ public class MappingProfile : Profile
         CreateMap<AcademicYearDto, AcademicYear>();
         CreateMap<FalcutyDto, Falcuty>();
         CreateMap<StudentDto, Student>();
+        CreateMap<Register, Student>();
         CreateMap<Student, StudentDto>();
         CreateMap<TeacherDto, Teacher>();
     }

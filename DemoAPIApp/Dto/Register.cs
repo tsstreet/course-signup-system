@@ -1,15 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DemoAPIApp.Data.Model
+namespace DemoAPIApp.Data.Dto
 {
-    public class Student
+    public class Register
     {
         [Key]
         public int StdId { get; set; }
-        
-        [Required]         
-        public string StdCode { get; set; } = string.Empty;
 
         [Required]
         public string? LastName { get; set; }
@@ -21,7 +18,6 @@ namespace DemoAPIApp.Data.Model
         public string? Gender { get; set; }
 
         [Required]
-        [DataType(DataType.Date)]
         public DateTime Dob { get; set; }
         public string? ParentName { get; set; }
         public string? Address { get; set; }
@@ -33,8 +29,5 @@ namespace DemoAPIApp.Data.Model
 
         [Required]
         public string? Password { get; set; }
-        public ICollection<ClassStudent> ClassStudents { get; set; }
     }
 }
-    
-

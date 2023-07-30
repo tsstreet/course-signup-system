@@ -101,5 +101,7 @@ namespace DemoAPIApp.Services.ClassService
                                     .ToListAsync();
             return subjects;
         }
+
+        
     }
 }

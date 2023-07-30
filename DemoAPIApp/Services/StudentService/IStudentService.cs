@@ -1,4 +1,5 @@
 ﻿using DemoAPIApp.Data.Model;
+using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;
 
 namespace DemoAPIApp.Services.StudentService
@@ -11,6 +12,8 @@ namespace DemoAPIApp.Services.StudentService
 
         Task<Student> AddStudent(Student student, int classId);
 
+        Task<Student> RegisterStudent(Student student);
+
         Task<Student> UpdateStudent(int id, Student student);
 
         Task<Student> DeleteStudent(int id);
@@ -20,5 +23,9 @@ namespace DemoAPIApp.Services.StudentService
         Task<bool> RegisterStudentForClass(int studentId, int classId);
 
         Task<bool> UnregisterStudentFromClass(int studentId, int classId);
+
+        Task<ICollection<Schedule>> GetStudentSchedule(int id);
+
+        Task<ActionResult<List<Student>>> Search(string searchString);
     }
 }

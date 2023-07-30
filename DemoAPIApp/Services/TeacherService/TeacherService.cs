@@ -79,5 +79,23 @@ namespace DemoAPIApp.Services.TeacherService
             return schedule.ToList();
         }
 
+        
+
+        public async Task<ActionResult<List<Teacher>>> Search(string searchString)
+        {
+            var teacher = from s in _context.Teachers
+                           select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                teacher = teacher.Where(s => s.FullName.ToLower().Contains(searchString.ToLower())
+                                           || s.LastName.ToLower().Contains(searchString.ToLower())
+                                           || s.Email.ToLower().Contains(searchString.ToLower())
+                                           || s.TeacherCode.ToLower().Contains(searchString.ToLower())
+                                           || s.Phone.Contains(searchString));
+            }
+
+            return await teacher.ToListAsync();
+        }
     }
 }

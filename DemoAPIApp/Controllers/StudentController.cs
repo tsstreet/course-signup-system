@@ -50,7 +50,17 @@ namespace DemoAPIApp.Controllers
             var addedStudent = await _studentService.AddStudent(studentDto, classId);
             var addedStudentDto = _mapper.Map<StudentDto>(addedStudent);
 
+
             return Ok(addedStudentDto);
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(Register student)
+        {
+            var studentDto = _mapper.Map<Student>(student);
+            var addedStudent = await _studentService.RegisterStudent(studentDto);
+
+            return Ok(addedStudent);
         }
 
         [HttpPut("{id}")]
@@ -77,6 +87,13 @@ namespace DemoAPIApp.Controllers
             return Ok(getClass);
         }
 
+        [HttpGet("{id}/schedule")]
+        public async Task<IActionResult> GetStudentSchedule(int id)
+        {
+            var schedule = await _studentService.GetStudentSchedule(id);
+            return Ok(schedule);
+        }
+
         [HttpPost("class register")]
         public async Task<IActionResult> RegisterStudentForClass(int studentId, int classId)
         {
@@ -90,6 +107,14 @@ namespace DemoAPIApp.Controllers
             var unregister = await _studentService.UnregisterStudentFromClass(studentId, classId);
 
             return Ok(unregister);
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var students = await _studentService.Search(searchString);
+
+            return Ok(students);
         }
     }
 }
