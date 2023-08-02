@@ -2,6 +2,7 @@
 using DemoAPIApp.Services.TeacherService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace DemoAPIApp.Services.UserService
 {
@@ -77,6 +78,15 @@ namespace DemoAPIApp.Services.UserService
             }
 
             return await user.ToListAsync();
+        }
+
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out Byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash= hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }    
         }
     }
 }

@@ -5,6 +5,8 @@ namespace DemoAPIApp.Services.AuthService
 {
     public interface IAuthService
     {
-        Task<UserDto> Login(LoginRequest request);
+        Task<User> Login(LoginRequest request);
+
+        //Task<UserDto> Login(LoginRequest request);
     }
 }

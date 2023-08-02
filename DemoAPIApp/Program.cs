@@ -14,6 +14,7 @@ using DemoAPIApp.Services.StudentService;
 using DemoAPIApp.Services.SubjectGradeService;
 using DemoAPIApp.Services.SubjectService;
 using DemoAPIApp.Services.TeacherService;
+using DemoAPIApp.Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors();
 
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IClassService, ClassService>();

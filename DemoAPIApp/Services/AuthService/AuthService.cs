@@ -19,69 +19,42 @@ namespace DemoAPIApp.Services.AuthService
             _configuration = configuration;
     }
 
-        //public async Task<User> Login(LoginRequest request)
-        //{
-        //    var student = await _context.Students.FirstOrDefaultAsync(x => x.Email == request.Email && x.Password == request.Password);
-        //    var teacher = await _context.Teachers.FirstOrDefaultAsync(x => x.Email == request.Email && x.Password == request.Password);
-
-        //    // return error message if both student and teacher not found
-        //    if (student == null && teacher == null)
-        //    {
-        //        return null;
-        //    }
-
-        //    else if (student != null)
-        //    {
-        //        var token = CreateToken(new User { Id = student.StdId, Username = student.Email, Role = "Student" });
-        //        var userObj = new User
-        //        {
-        //            Id = student.StdId,
-        //            Username = student.Email,
-        //            Role = "Student",
-        //            Token = token
-        //        };
-
-        //        return userObj;
-        //    }
-        //    else if (teacher != null) 
-        //    {
-        //        var token = CreateToken(new User { Id = teacher.TeacherId, Username = teacher.Email, Role = "Teacher" });
-        //        var userObj = new User
-        //        {
-        //            Id = teacher.TeacherId,
-        //            Username = teacher.Email,
-        //            Role = "Teacher",
-        //            Token = token
-        //        };
-
-        //        return userObj;
-        //    }
-        //    else
-        //    {
-        //        throw new Exception("Wrong email or password");
-        //    }
-        //}
-
-        public async Task<UserDto> Login(LoginRequest request)
+        public async Task<User> Login(LoginRequest request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email && x.Password == request.Password);
+            var student = await _context.Students.FirstOrDefaultAsync(x => x.Email == request.Email && x.Password == request.Password);
+            var teacher = await _context.Teachers.FirstOrDefaultAsync(x => x.Email == request.Email && x.Password == request.Password);
 
-            if (user == null)
+            // return error message if both student and teacher not found
+            if (student == null && teacher == null)
             {
                 return null;
             }
-            else if (user != null)
+
+            else if (student != null)
             {
-                var token = CreateToken(new UserDto { Id = user.Id, Username = user.Email, Role = user.Role });
-                var userDto = new UserDto
+                var token = CreateToken(new User { Id = student.StdId, Username = student.Email, Role = "Student" });
+                var userObj = new User
                 {
-                    Id = user.Id,
-                    Username = user.Email,
-                    Role = user.Role,
+                    Id = student.StdId,
+                    Username = student.Email,
+                    Role = "Student",
                     Token = token
                 };
 
-                return userDto;
+                return userObj;
+            }
+            else if (teacher != null)
+            {
+                var token = CreateToken(new User { Id = teacher.TeacherId, Username = teacher.Email, Role = "Teacher" });
+                var userObj = new User
+                {
+                    Id = teacher.TeacherId,
+                    Username = teacher.Email,
+                    Role = "Teacher",
+                    Token = token
+                };
+
+                return userObj;
             }
             else
             {
@@ -89,7 +62,7 @@ namespace DemoAPIApp.Services.AuthService
             }
         }
 
-        private string CreateToken(UserDto user)
+        private string CreateToken(User user)
         {
             var claims = new List<Claim>
         {
@@ -112,5 +85,57 @@ namespace DemoAPIApp.Services.AuthService
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        //public async Task<UserDto> Login(LoginRequest request)
+        //{
+        //    var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email && x.Password == request.Password);
+
+        //    if (user == null)
+        //    {
+        //        return null;
+        //    }
+        //    else if (user != null)
+        //    {
+        //        var token = CreateToken(new UserDto { Id = user.Id, Username = user.Email, Role = user.Role });
+        //        var userDto = new UserDto
+        //        {
+        //            Id = user.Id,
+        //            Username = user.Email,
+        //            Role = user.Role,
+        //            Token = token
+        //        };
+
+        //        return userDto;
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("Wrong email or password");
+        //    }
+        //}
+
+        //private string CreateToken(UserDto user)
+        //{
+        //    var claims = new List<Claim>
+        //{
+        //    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        //    new Claim(ClaimTypes.Name, user.Email),
+        //    new Claim(ClaimTypes.Role, user.Role)
+        //};
+
+        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+        //    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+        //    var expires = DateTime.Now.AddDays(1);
+
+        //    var token = new JwtSecurityToken(
+        //        issuer: null,
+        //        audience: null,
+        //        claims: claims,
+        //        expires: expires,
+        //        signingCredentials: creds
+        //    );
+        //    return new JwtSecurityTokenHandler().WriteToken(token);
+        //}
+
+
     }
 }
