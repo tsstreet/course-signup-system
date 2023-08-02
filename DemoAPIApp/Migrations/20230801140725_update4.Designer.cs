@@ -4,6 +4,7 @@ using DemoAPIApp.Data.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DemoAPIApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230801140725_update4")]
+    partial class update4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,26 +139,6 @@ namespace DemoAPIApp.Migrations
                     b.HasKey("FalcutyId");
 
                     b.ToTable("Falcuties");
-                });
-
-            modelBuilder.Entity("DemoAPIApp.Data.Model.GradeType", b =>
-                {
-                    b.Property<int>("GradeTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GradeTypeId"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Weight")
-                        .HasColumnType("int");
-
-                    b.HasKey("GradeTypeId");
-
-                    b.ToTable("GradeTypes");
                 });
 
             modelBuilder.Entity("DemoAPIApp.Data.Model.OffSchedule", b =>
@@ -314,40 +297,6 @@ namespace DemoAPIApp.Migrations
                     b.HasIndex("FalcutyId");
 
                     b.ToTable("Subjects");
-                });
-
-            modelBuilder.Entity("DemoAPIApp.Data.Model.SubjectGrade", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AcademicYearId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GradeTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumOfGradeColumn")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumOfRequireGradeColumn")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AcademicYearId");
-
-                    b.HasIndex("GradeTypeId");
-
-                    b.HasIndex("SubjectId");
-
-                    b.ToTable("SubjectGrades");
                 });
 
             modelBuilder.Entity("DemoAPIApp.Data.Model.Teacher", b =>
@@ -514,33 +463,6 @@ namespace DemoAPIApp.Migrations
                     b.Navigation("Department");
 
                     b.Navigation("Falcuty");
-                });
-
-            modelBuilder.Entity("DemoAPIApp.Data.Model.SubjectGrade", b =>
-                {
-                    b.HasOne("DemoAPIApp.Data.Model.AcademicYear", "AcademicYear")
-                        .WithMany()
-                        .HasForeignKey("AcademicYearId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DemoAPIApp.Data.Model.GradeType", "GradeType")
-                        .WithMany()
-                        .HasForeignKey("GradeTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DemoAPIApp.Data.Model.Subject", "Subject")
-                        .WithMany()
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("AcademicYear");
-
-                    b.Navigation("GradeType");
-
-                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("DemoAPIApp.Data.Model.AcademicYear", b =>

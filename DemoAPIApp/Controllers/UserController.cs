@@ -1,118 +1,74 @@
-﻿//using DemoAPIApp.Data.Model;
-//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Mvc;
-//using AutoMapper;
+﻿using DemoAPIApp.Data.Model;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using DemoAPIApp.Data.Dto;
+using DemoAPIApp.Services.TeacherService;
+using DemoAPIApp.Services.UserService;
 
-//namespace DemoAPIApp.Controllers
-//{
-//    [Route("api/[controller]")]
-//    [ApiController]
-//    public class UserController : ControllerBase
-//    {
-//        private readonly DataContext _context;
-//        private readonly IWebHostEnvironment _hostEnvironment;
+namespace DemoAPIApp.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UserController : ControllerBase
+    {
+        private readonly IUserService _userService;
 
-//        private readonly IEmailService _emailService;
+        private readonly IMapper _mapper;
 
-//        private readonly IMapper _mapper;
+        public UserController(IUserService userService, IMapper mapper)
+        {
+            _userService = userService; 
+            _mapper = mapper;
+        }
 
-//        public UserController(DataContext context, IWebHostEnvironment hostEnvironment, IEmailService emailService)
-//        {
-//            _context = context;
-//            this._hostEnvironment = hostEnvironment;
-//            _emailService = emailService;
-//        }
+        [HttpGet]
+        public async Task<IActionResult> GetUser()
+        {
+            var user = await _userService.GetUsers();
 
-//        [HttpGet]
-//        public async Task<ActionResult<IEnumerable<User>>> Get()
-//        {
-//            return await _context.Users.ToListAsync();
-//        }
+            return Ok(user);
+        }
 
-//        [HttpGet("{id}")]
-//        public async Task<ActionResult<User>> Get(int id)
-//        {
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var user = await _userService.GetUserById(id);
 
-//            var user = await _context.Users.FindAsync(id);
+            return Ok(user);
 
-//            if (user == null)
-//            {
-//                return BadRequest("User not found");
-//            }
- 
-//            var userDto = new LoginRequest
-//            {
-//                FirstName = user.FirstName,
-//                LastName = user.LastName,
-//                Email = user.Email
-//            };
+        }
 
-//            return Ok(userDto);
+        [HttpPost]
+        public async Task<IActionResult> AddUser(User user)
+        {
+            var userAdd = await _userService.AddUser(user);
 
-//            //var userDto = _mapper.Map<UserDto>(user);
-//            //return user;
-//        }
-        
-//        [HttpPost]
-//        public async Task<ActionResult<User>> AddUser(User user)
-//        {
+            return Ok(userAdd);
+        }
 
-//            _context.Users.Add(user);
-//            await _context.SaveChangesAsync();
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTeacher(int id, User user)
+        {
+            var userUpdate = await _userService.UpdateUser(id, user);
+            return Ok(userUpdate);
+        }
 
-//            // Send a welcome email to the user
-//            _emailService.SendEmail(user.Email, "Welcome to our app!", "Thank you for signing up for our app.");
-//            return Ok();
-//        }
-          
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _userService.DeleteUser(id);
 
-//        [HttpPut("{id}")]
-//        public async Task<IActionResult> UpdateUser(int id, User user)
-//        {
-//            if (id != user.Id)
-//            {
-//                return BadRequest("User not found");
-//            }
+            return Ok(user);
+        }
 
-//            _context.Entry(user).State = EntityState.Modified;
+        [HttpGet("search")]
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var users = await _userService.Search(searchString);
 
-//            try
-//            {
-//                await _context.SaveChangesAsync();
-//            }
-//            catch (DbUpdateConcurrencyException)
-//            {
-//                if (!UserExists(id))
-//                {
-//                    return NotFound();
-//                }
-//            }
+            return Ok(users);
+        }
 
-
-//            return Ok(await _context.Users.ToListAsync());
-//        }
-
-//        [HttpDelete("{id}")]
-//        public async Task<ActionResult<User>> Delete(int id)
-//        {
-
-//            var user = await _context.Users.FindAsync(id);
-
-//            if (user == null)
-//            {
-//                return BadRequest("Product not found");
-//            }
-
-//            _context.Users.Remove(user);
-//            await _context.SaveChangesAsync();
-
-//            return Ok(await _context.Users.ToListAsync());
-//        }
-
-//        private bool UserExists(int id)
-//        {
-//            return _context.Users.Any(x => x.Id == id);
-//        }
-     
-//    }
-//}
+    }
+}

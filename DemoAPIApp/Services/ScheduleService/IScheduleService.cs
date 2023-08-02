@@ -1,4 +1,5 @@
 ﻿using DemoAPIApp.Data.Model;
+using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;
 
 namespace DemoAPIApp.Services.ScheduleService
@@ -15,5 +16,6 @@ namespace DemoAPIApp.Services.ScheduleService
 
         Task<Schedule> DeleteSchedule(int id);
 
+        Task<List<Schedule>> Search(string searchString);
     }
 }

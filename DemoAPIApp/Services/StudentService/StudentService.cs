@@ -1,7 +1,9 @@
 ﻿using DemoAPIApp.Data.Model;
 using DemoAPIApp.Services.StudentService;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Common;
 
 namespace DemoAPIApp.Services.StudentService
 {
@@ -48,6 +50,17 @@ namespace DemoAPIApp.Services.StudentService
                 _context.ClassStudents.Add(classStudent);
             }
 
+            // Create a new user object with the hashed password
+            var userObj = new User
+            {
+                Email = student.Email,
+                ImageUrl = student.ImageUrl,
+                Name = student.FullName,
+                Password = student.Password,
+                Role = "Student",
+            };
+
+            _context.Users.Add(userObj);
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
             return student;
@@ -160,7 +173,7 @@ namespace DemoAPIApp.Services.StudentService
             return schedule;
         }
 
-        public async Task<ActionResult<List<Student>>> Search(string searchString)
+        public async Task<List<Student>> Search(string searchString)
         {
             var students = from s in _context.Students
                            select s;

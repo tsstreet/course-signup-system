@@ -18,6 +18,6 @@ namespace DemoAPIApp.Services.TeacherService
 
         Task<ICollection<Schedule>> GetScheduleByTeacher(int id);
 
-        Task<ActionResult<List<Teacher>>> Search(string searchString);
+        Task<List<Teacher>> Search(string searchString);
     }
 }

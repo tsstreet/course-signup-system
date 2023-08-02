@@ -18,5 +18,10 @@ namespace DemoAPIApp.Services.ClassService
         Task<ICollection<Student>> GetStudentByClass(int classId);
 
         Task<ICollection<Subject>> GetSubjectByClass(int id);
+
+        Task<ICollection<Schedule>> GetScheduleByClass(int id);
+
+        Task<bool> RemoveSubjectFromClass(int classId, int subjectId);
     }
 }
+

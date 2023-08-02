@@ -29,6 +29,11 @@ namespace DemoAPIApp.Data.Model
         public DbSet<Department> Departments { get; set; }
 
         public DbSet<Falcuty> Falcuties { get; set; }
-        public DbSet<Subject> Subjects { get; set; } 
+        public DbSet<Subject> Subjects { get; set; }
+
+        public DbSet<GradeType> GradeTypes { get; set; }
+        public DbSet<OffSchedule> OffSchedules { get; set; }
+
+        public DbSet<SubjectGrade> SubjectGrades { get; set; }
     }
 }

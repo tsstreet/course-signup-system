@@ -3,6 +3,7 @@ using Azure.Core;
 using DemoAPIApp.Data.Dto;
 using DemoAPIApp.Data.Model;
 using DemoAPIApp.Services.AcademicYearService;
+using DemoAPIApp.Services.FalcutyService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -77,6 +78,14 @@ namespace DemoAPIApp.Controllers
             //var getClassDto = _mapper.Map<List<Class>>(getClass);
 
             return Ok(getClass);
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var search = await _academicYearService.Search(searchString);
+
+            return Ok(search);
         }
     }
 }

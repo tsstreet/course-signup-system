@@ -26,6 +26,6 @@ namespace DemoAPIApp.Services.StudentService
 
         Task<ICollection<Schedule>> GetStudentSchedule(int id);
 
-        Task<ActionResult<List<Student>>> Search(string searchString);
+        Task<List<Student>> Search(string searchString);
     }
 }

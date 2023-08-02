@@ -66,5 +66,12 @@ namespace DemoAPIApp.Controllers
             return Ok(deleteSubject);
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var search = await _subjectService.Search(searchString);
+
+            return Ok(search);
+        }
     }
 }

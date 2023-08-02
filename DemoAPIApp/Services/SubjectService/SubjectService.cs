@@ -66,5 +66,18 @@ namespace DemoAPIApp.Services.ClassService
 
             return subject;
         }
+
+        public async Task<List<Subject>> Search(string searchString)
+        {
+            var subject = from s in _context.Subjects
+                          select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                subject = subject.Where(s => s.Name.ToLower().Contains(searchString.ToLower()) || s.SubjectCode.ToLower().Contains(searchString.ToLower()));
+            }
+
+            return await subject.ToListAsync();
+        }
     }
 }

@@ -14,8 +14,6 @@ namespace DemoAPIApp.Services.SubjectService
         Task<Subject> UpdateSubject(int id, Subject subject);
 
         Task<Subject> DeleteSubject(int id);
-
-        //Task<ICollection<Student>> GetStudentByClass(int classId);
-
+        Task<List<Subject>> Search(string searchString);
     }
 }

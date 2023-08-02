@@ -83,6 +83,20 @@ namespace DemoAPIApp.Controllers
             return Ok(student);
         }
 
-       
+        [HttpGet("{id}/schedule")]
+        public async Task<IActionResult> GetScheduleByClass(int id)
+        {
+            var schedule = await _classService.GetScheduleByClass(id);
+            return Ok(schedule);
+        }
+
+        [HttpDelete("remove subject from class")]
+        public async Task<IActionResult> RemoveSubjectFromClass(int subjectId, int classId)
+        {
+            var remove = await _classService.RemoveSubjectFromClass(subjectId, classId);
+
+            return Ok(remove);
+        }
+
     }
 }

@@ -15,5 +15,8 @@ namespace DemoAPIApp.Services.FalcutyService
 
         Task<Falcuty> DeleteFalcuty(int id);
 
+        Task<List<Falcuty>> Search(string searchString);
+
+        Task<ICollection<Subject>> GetSubjectByFalcuty(int id);
     }
 }

@@ -28,7 +28,7 @@ namespace DemoAPIApp.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<User>> Login(LoginRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
             var user = await _authService.Login(request);
 

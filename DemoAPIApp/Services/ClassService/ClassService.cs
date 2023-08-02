@@ -102,6 +102,46 @@ namespace DemoAPIApp.Services.ClassService
             return subjects;
         }
 
-        
+        public async Task<ICollection<Schedule>> GetScheduleByClass(int id)
+        {
+            var schedule = await _context.Schedules
+                                    .Where(c => c.ClassId == id)
+                                    .ToListAsync();
+            return schedule;
+        }
+
+        public async Task<List<Class>> Search(string searchString)
+        {
+            var search = from s in _context.Classes
+                           select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                search = search.Where(s => s.ClassCode.ToLower().Contains(searchString.ToLower())
+                                           || s.ClassName.ToLower().Contains(searchString.ToLower()));
+            }
+
+            return await search.ToListAsync();
+        }
+
+        public async Task<bool> RemoveSubjectFromClass(int classId, int subjectId)
+        {
+            var cls = await _context.Classes.FindAsync(classId);
+            var subject = await _context.Subjects.FindAsync(subjectId);
+
+            if (cls != null && subject != null)
+            {
+                var schedule = await _context.Schedules
+                    .SingleOrDefaultAsync(s => s.ClassId == classId && s.SubjectId == subjectId);
+
+                if (schedule != null)
+                {
+                    _context.Schedules.Remove(schedule);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            return true;
+        }
     }
 }

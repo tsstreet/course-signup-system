@@ -17,5 +17,6 @@ namespace DemoAPIApp.Services.DepartmentService
 
         Task<ICollection<Subject>> GetSubjectByDepartment(int id);
 
+
     }
 }

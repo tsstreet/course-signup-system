@@ -67,7 +67,13 @@ namespace DemoAPIApp.Controllers
             return Ok(deleteSchedule);
         }
 
-        
+        [HttpGet("search")]
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var schedule = await _scheduleService.Search(searchString);
+
+            return Ok(schedule);
+        }
 
     }
 }

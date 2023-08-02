@@ -63,5 +63,28 @@ namespace DemoAPIApp.Services.FalcutyService
 
             return falcuty;
         }
+
+        public async Task<List<Falcuty>> Search(string searchString)
+        {
+            var falcuty = from s in _context.Falcuties
+                       select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                falcuty = falcuty.Where(s => s.Name.ToLower().Contains(searchString.ToLower()));
+            }
+
+            return await falcuty.ToListAsync();
+        }
+
+        public async Task<ICollection<Subject>> GetSubjectByFalcuty(int id)
+        {
+            var subject = await _context.Subjects
+                .Where(s => s.FalcutyId == id)
+                .ToListAsync();
+
+            return subject;
+        }
+
     }
 }

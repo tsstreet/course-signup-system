@@ -81,7 +81,7 @@ namespace DemoAPIApp.Services.TeacherService
 
         
 
-        public async Task<ActionResult<List<Teacher>>> Search(string searchString)
+        public async Task<List<Teacher>> Search(string searchString)
         {
             var teacher = from s in _context.Teachers
                            select s;

@@ -71,5 +71,21 @@ namespace DemoAPIApp.Services.ScheduleService
 
             return scheduleDelete;
         }
+
+        public async Task<List<Schedule>> Search(string searchString)
+        {
+            var schedule = from s in _context.Schedules
+                           join t in _context.Teachers on s.TeacherId equals t.TeacherId
+                           join sj in _context.Subjects on s.SubjectId equals sj.SubjectId
+                           select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                schedule = schedule.Where(s => s.Teacher.FullName.ToLower().Contains(searchString.ToLower())
+                                           || s.Subject.Name.ToLower().Contains(searchString.ToLower()));
+            }
+
+            return await schedule.ToListAsync();
+        }
     }
 }

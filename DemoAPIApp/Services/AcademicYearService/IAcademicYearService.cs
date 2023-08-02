@@ -17,5 +17,6 @@ namespace DemoAPIApp.Services.AcademicYearService
 
         Task<ICollection<Class>> GetClassByAcademicYear(int id);
 
+        Task<List<AcademicYear>> Search(string searchString);
     }
 }

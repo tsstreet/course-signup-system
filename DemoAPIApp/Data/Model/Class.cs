@@ -8,6 +8,9 @@ namespace DemoAPIApp.Data.Model
         [Key]
         public int ClassId { get; set; }
 
+        [Required]
+        public string? ClassCode { get; set; }
+
         public AcademicYear? AcademicYear { get; set; }
 
         [Required]       

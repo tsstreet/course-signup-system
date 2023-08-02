@@ -9,6 +9,9 @@ namespace DemoAPIApp.Data.Dto
         public int ClassId { get; set; }
 
         [Required]
+        public string? ClassCode { get; set; }
+
+        [Required]
         public string? ClassName { get; set; }
 
         [Required]

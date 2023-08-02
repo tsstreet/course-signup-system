@@ -72,5 +72,19 @@ namespace DemoAPIApp.Services.FalcutyService
 
             return classGet.ToList();
         }
+
+        public async Task<List<AcademicYear>> Search(string searchString)
+        {
+            var year = from s in _context.AcademicYears
+                           select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                year = year.Where(s => s.AcademicYearCode.ToLower().Contains(searchString.ToLower())
+                                           || s.Name.ToLower().Contains(searchString.ToLower()));
+            }
+
+            return await year.ToListAsync();
+        }
     }
 }

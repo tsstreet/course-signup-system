@@ -22,7 +22,5 @@ namespace DemoAPIApp.Data.Model
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
 
-        
-
     }
 }

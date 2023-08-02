@@ -7,8 +7,11 @@ using DemoAPIApp.Services.AuthService;
 using DemoAPIApp.Services.ClassService;
 using DemoAPIApp.Services.DepartmentService;
 using DemoAPIApp.Services.FalcutyService;
+using DemoAPIApp.Services.GradeTypeService;
+using DemoAPIApp.Services.OffScheduleService;
 using DemoAPIApp.Services.ScheduleService;
 using DemoAPIApp.Services.StudentService;
+using DemoAPIApp.Services.SubjectGradeService;
 using DemoAPIApp.Services.SubjectService;
 using DemoAPIApp.Services.TeacherService;
 
@@ -40,6 +43,9 @@ builder.Services.AddScoped<IFalcutyService, FalcutyService>();
 builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
 builder.Services.AddScoped<ISubjectService, SubjectService>();
 builder.Services.AddScoped<IScheduleService, ScheduleService>();
+builder.Services.AddScoped<IOffScheduleService, OffScheduleService>();
+builder.Services.AddScoped<IGradeTypeService, GradeTypeService>();
+builder.Services.AddScoped<ISubjectGradeService, SubjectGradeService>();
 
 var app = builder.Build();
 
