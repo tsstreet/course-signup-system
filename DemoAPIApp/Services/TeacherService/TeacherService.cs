@@ -2,6 +2,7 @@
 using DemoAPIApp.Services.TeacherService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace DemoAPIApp.Services.TeacherService
 {
@@ -29,16 +30,41 @@ namespace DemoAPIApp.Services.TeacherService
 
         public async Task<Teacher> AddTeacher(Teacher teacher)
         {
-            var existTeacher = await _context.Teachers.FirstOrDefaultAsync(x => x.Email == teacher.Email);
+            var existTeacher = await _context.Users.FirstOrDefaultAsync(x => x.Email == teacher.Email);
 
             if (existTeacher != null)
             {
                 throw new Exception("Email already exist");
             }
 
+            // Generate password hash and salt
+            CreatePasswordHash(teacher.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
+            var user = new User
+            {
+                Name = teacher.FullName,
+                Email = teacher.Email,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Role = "Teacher",
+                ImageUrl = teacher.ImageUrl
+            };
+            _context.Users.Add(user);
+
+            teacher.SetPassword(passwordHash, passwordSalt);
+
             _context.Teachers.Add(teacher);
             await _context.SaveChangesAsync();
             return teacher;
+        }
+
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out Byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
         }
 
         public async Task<Teacher> UpdateTeacher(int id, Teacher teacher)
@@ -52,8 +78,28 @@ namespace DemoAPIApp.Services.TeacherService
             teacherUpdate.Phone = teacher.Phone;
             teacherUpdate.Dob = teacher.Dob;
             teacherUpdate.Gender = teacher.Gender;
-            teacherUpdate.Password = teacher.Password;
+           
             teacherUpdate.ImageUrl = teacher.ImageUrl;
+
+
+            if (!string.IsNullOrEmpty(teacher.Password) && !string.IsNullOrEmpty(teacher.FullName) && !string.IsNullOrEmpty(teacher.Email))
+            {
+                // Generate password hash and salt
+                CreatePasswordHash(teacher.Password, out byte[] passwordHash, out byte[] passwordSalt);
+                teacherUpdate.SetPassword(passwordHash, passwordSalt);
+
+
+                // Update the associated user's properties
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == teacherUpdate.Email);
+                if (user != null)
+                {
+                    user.Name = teacherUpdate.FullName;
+                    user.ImageUrl = teacherUpdate.ImageUrl;
+                    user.Email = teacherUpdate.Email;
+                    user.PasswordHash = passwordHash;
+                    user.PasswordSalt = passwordSalt;
+                }
+            }
 
             await _context.SaveChangesAsync();
 

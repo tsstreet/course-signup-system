@@ -10,7 +10,9 @@ namespace DemoAPIApp.Services.UserService
 
         Task<User> GetUserById(int id);
 
-        Task<User> AddUser(User user);
+        //Task<User> AddUser(User user);
+
+        Task<User> AddUser(UserDto user);
 
         Task<User> UpdateUser(int id, User user);
 

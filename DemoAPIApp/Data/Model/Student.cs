@@ -34,6 +34,11 @@ namespace DemoAPIApp.Data.Model
         [Required]
         public string? Password { get; set; }
         public ICollection<ClassStudent> ClassStudents { get; set; }
+
+        public void SetPassword(byte[] passwordHash, byte[] passwordSalt)
+        {
+            Password = Convert.ToBase64String(passwordHash) + ":" + Convert.ToBase64String(passwordSalt);
+        }
     }
 }
     

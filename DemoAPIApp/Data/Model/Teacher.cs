@@ -39,6 +39,11 @@ namespace DemoAPIApp.Data.Model
         public string? Password { get; set; }
 
         public ICollection<Schedule> Schedules { get; set; }
+
+        public void SetPassword(byte[] passwordHash, byte[] passwordSalt)
+        {
+            Password = Convert.ToBase64String(passwordHash) + ":" + Convert.ToBase64String(passwordSalt);
+        }
     }
    
 }

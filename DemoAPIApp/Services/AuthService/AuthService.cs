@@ -1,9 +1,11 @@
-﻿using DemoAPIApp.Data.Model;
+﻿using Azure.Core;
+using DemoAPIApp.Data.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace DemoAPIApp.Services.AuthService
@@ -17,57 +19,32 @@ namespace DemoAPIApp.Services.AuthService
         {
             _context = context;
             _configuration = configuration;
-    }
+        }
 
-        public async Task<User> Login(LoginRequest request)
+
+        public async Task<string> Login(LoginRequest request)
         {
-            var student = await _context.Students.FirstOrDefaultAsync(x => x.Email == request.Email && x.Password == request.Password);
-            var teacher = await _context.Teachers.FirstOrDefaultAsync(x => x.Email == request.Email && x.Password == request.Password);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
 
-            // return error message if both student and teacher not found
-            if (student == null && teacher == null)
+            if (user == null)
             {
                 return null;
             }
 
-            else if (student != null)
+            if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
             {
-                var token = CreateToken(new User { Id = student.StdId, Username = student.Email, Role = "Student" });
-                var userObj = new User
-                {
-                    Id = student.StdId,
-                    Username = student.Email,
-                    Role = "Student",
-                    Token = token
-                };
+                return null;
+            }
 
-                return userObj;
-            }
-            else if (teacher != null)
-            {
-                var token = CreateToken(new User { Id = teacher.TeacherId, Username = teacher.Email, Role = "Teacher" });
-                var userObj = new User
-                {
-                    Id = teacher.TeacherId,
-                    Username = teacher.Email,
-                    Role = "Teacher",
-                    Token = token
-                };
-
-                return userObj;
-            }
-            else
-            {
-                throw new Exception("Wrong email or password");
-            }
+            var token = CreateToken(user);
+            return token;
         }
 
         private string CreateToken(User user)
         {
             var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Email),
+            new Claim(ClaimTypes.Name, user.Name),
             new Claim(ClaimTypes.Role, user.Role)
         };
 
@@ -82,60 +59,16 @@ namespace DemoAPIApp.Services.AuthService
                 expires: expires,
                 signingCredentials: creds
             );
-
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        //public async Task<UserDto> Login(LoginRequest request)
-        //{
-        //    var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email && x.Password == request.Password);
-
-        //    if (user == null)
-        //    {
-        //        return null;
-        //    }
-        //    else if (user != null)
-        //    {
-        //        var token = CreateToken(new UserDto { Id = user.Id, Username = user.Email, Role = user.Role });
-        //        var userDto = new UserDto
-        //        {
-        //            Id = user.Id,
-        //            Username = user.Email,
-        //            Role = user.Role,
-        //            Token = token
-        //        };
-
-        //        return userDto;
-        //    }
-        //    else
-        //    {
-        //        throw new Exception("Wrong email or password");
-        //    }
-        //}
-
-        //private string CreateToken(UserDto user)
-        //{
-        //    var claims = new List<Claim>
-        //{
-        //    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-        //    new Claim(ClaimTypes.Name, user.Email),
-        //    new Claim(ClaimTypes.Role, user.Role)
-        //};
-
-        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
-        //    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-        //    var expires = DateTime.Now.AddDays(1);
-
-        //    var token = new JwtSecurityToken(
-        //        issuer: null,
-        //        audience: null,
-        //        claims: claims,
-        //        expires: expires,
-        //        signingCredentials: creds
-        //    );
-        //    return new JwtSecurityTokenHandler().WriteToken(token);
-        //}
-
-
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                return computedHash.SequenceEqual(passwordHash);
+            }
+        }
     }
 }

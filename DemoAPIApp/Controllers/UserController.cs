@@ -40,7 +40,7 @@ namespace DemoAPIApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUser(User user)
+        public async Task<IActionResult> AddUser(UserDto user)
         {
             var userAdd = await _userService.AddUser(user);
 

@@ -28,18 +28,54 @@ namespace DemoAPIApp.Services.UserService
             return user;
         }
 
-        public async Task<User> AddUser(User user)
+        //public async Task<User> AddUser(User user)
+        //{
+        //    var existUser = await _context.Users.FirstOrDefaultAsync(x => x.Email == user.Email);
+
+        //    if (existUser != null)
+        //    {
+        //        throw new Exception("Email already exist");
+        //    }
+
+        //    _context.Users.Add(user);
+        //    await _context.SaveChangesAsync();
+        //    return user;
+        //}
+
+        public async Task<User> AddUser(UserDto userDto)
         {
-            var existUser = await _context.Users.FirstOrDefaultAsync(x => x.Email == user.Email);
+            var existUser = await _context.Users.FirstOrDefaultAsync(x => x.Email == userDto.Email);
 
             if (existUser != null)
             {
-                throw new Exception("Email already exist");
+                throw new InvalidOperationException("Email already exists");
             }
 
+            // Generate password hash and salt
+            CreatePasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
+            // Create a new User object
+            var user = new User
+            {
+                Name = userDto.Name,
+                Email = userDto.Email,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Role = userDto.Role,
+                ImageUrl = userDto.ImageUrl
+            };            
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return user;
+        }
+
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out Byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
         }
 
         public async Task<User> UpdateUser(int id, User user)
@@ -80,13 +116,5 @@ namespace DemoAPIApp.Services.UserService
             return await user.ToListAsync();
         }
 
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out Byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash= hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }    
-        }
     }
 }

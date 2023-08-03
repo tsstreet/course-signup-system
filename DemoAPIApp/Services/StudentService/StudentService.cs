@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Common;
+using NuGet.DependencyResolver;
+using System.Security.Cryptography;
 
 namespace DemoAPIApp.Services.StudentService
 {
@@ -31,7 +33,7 @@ namespace DemoAPIApp.Services.StudentService
 
         public async Task<Student> AddStudent(Student student, int classId)
         {
-            var existStudent = await _context.Students.FirstOrDefaultAsync(x => x.Email == student.Email );
+            var existStudent = await _context.Users.FirstOrDefaultAsync(x => x.Email == student.Email );
             var @class = await _context.Classes.FindAsync(classId);
 
             if (existStudent != null)
@@ -50,32 +52,63 @@ namespace DemoAPIApp.Services.StudentService
                 _context.ClassStudents.Add(classStudent);
             }
 
-            // Create a new user object with the hashed password
-            var userObj = new User
-            {
-                Email = student.Email,
-                ImageUrl = student.ImageUrl,
-                Name = student.FullName,
-                Password = student.Password,
-                Role = "Student",
-            };
+            // Generate password hash and salt
+            CreatePasswordHash(student.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            _context.Users.Add(userObj);
+            var user = new User
+            {
+                Name = student.FullName,
+                Email = student.Email,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Role = "Student",
+                ImageUrl = student.ImageUrl
+            };
+            _context.Users.Add(user);
+
+            student.SetPassword(passwordHash, passwordSalt);
+
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
             return student;
-        }
+        }  
+
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out Byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+        }    
 
         public async Task<Student> RegisterStudent(Student student)
         {
-            var existStudent = await _context.Students.FirstOrDefaultAsync(x => x.Email == student.Email);
+            var existStudent = await _context.Users.FirstOrDefaultAsync(x => x.Email == student.Email);
       
             if (existStudent != null)
             {
                 throw new Exception("Email already exist");
             }
 
+            // Generate password hash and salt
+            CreatePasswordHash(student.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
+            var user = new User
+            {
+                Name = student.FullName,
+                Email = student.Email,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Role = "Student",
+                ImageUrl = student.ImageUrl
+            };
+            _context.Users.Add(user);
+
+            student.SetPassword(passwordHash, passwordSalt);
+
             _context.Students.Add(student);
+
             await _context.SaveChangesAsync();
             return student;
         }
@@ -94,8 +127,27 @@ namespace DemoAPIApp.Services.StudentService
             studentUpdate.Password = student.Password;
             studentUpdate.ImageUrl = studentUpdate.ImageUrl;
 
-            await _context.SaveChangesAsync();
+            if (!string.IsNullOrEmpty(student.Password) && !string.IsNullOrEmpty(student.FullName) && !string.IsNullOrEmpty(student.Email))
+            {
+                // Generate password hash and salt
+                CreatePasswordHash(student.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
+                // Update the student's password
+                studentUpdate.SetPassword(passwordHash, passwordSalt);
+
+                // Update the associated user's password hash
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == studentUpdate.Email);
+                if (user != null)
+                {
+                    user.Name = studentUpdate.FullName;
+                    user.ImageUrl = studentUpdate.ImageUrl;
+                    user.Email = studentUpdate.Email;
+                    user.PasswordHash = passwordHash;
+                    user.PasswordSalt = passwordSalt;
+                }
+            }
+
+            await _context.SaveChangesAsync();
             return studentUpdate;
         }
 
