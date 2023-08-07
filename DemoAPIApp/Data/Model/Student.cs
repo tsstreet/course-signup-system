@@ -27,11 +27,11 @@ namespace DemoAPIApp.Data.Model
         public string? Address { get; set; }
         public string? Phone { get; set; }
 
-        [Required]
+        [Required, EmailAddress]
         public string? Email { get; set; }
         public string? ImageUrl { get; set; }
 
-        [Required]
+        [Required, MinLength(6)]
         public string? Password { get; set; }
         public ICollection<ClassStudent> ClassStudents { get; set; }
 

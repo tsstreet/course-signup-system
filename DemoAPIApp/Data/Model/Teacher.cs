@@ -28,7 +28,8 @@ namespace DemoAPIApp.Data.Model
 
         [Required]
         public string? Phone { get; set; }
-        [Required] 
+
+        [Required, EmailAddress]
         public string? Email { get; set; }
 
         public string? ImageUrl { get; set; }
@@ -36,6 +37,7 @@ namespace DemoAPIApp.Data.Model
         [Required]
         public string? MainSubject { get; set; }
 
+        [MinLength(6)]
         public string? Password { get; set; }
 
         public ICollection<Schedule> Schedules { get; set; }
