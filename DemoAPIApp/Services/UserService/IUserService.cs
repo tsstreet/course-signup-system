@@ -1,4 +1,5 @@
-﻿using DemoAPIApp.Data.Model;
+﻿using DemoAPIApp.Data.Dto;
+using DemoAPIApp.Data.Model;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;
 
@@ -19,5 +20,8 @@ namespace DemoAPIApp.Services.UserService
         Task<User> DeleteUser(int id);
 
         Task<List<User>> Search(string searchString);
+
+        Task<string> ForgotPassword(string email);
+        Task<string> ResetPassword(ResetPassword request);
     }
 }

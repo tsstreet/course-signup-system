@@ -70,5 +70,20 @@ namespace DemoAPIApp.Controllers
             return Ok(users);
         }
 
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var emailReset = await _userService.ForgotPassword(email);
+
+            return Ok(emailReset);
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPassword request)
+        {
+            var emailReset = await _userService.ResetPassword(request);
+
+            return Ok(emailReset);
+        }
     }
 }

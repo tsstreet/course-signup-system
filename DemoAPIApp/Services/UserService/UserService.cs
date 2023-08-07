@@ -1,4 +1,5 @@
-﻿using DemoAPIApp.Data.Model;
+﻿using DemoAPIApp.Data.Dto;
+using DemoAPIApp.Data.Model;
 using DemoAPIApp.Services.TeacherService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -116,5 +117,37 @@ namespace DemoAPIApp.Services.UserService
             return await user.ToListAsync();
         }
 
+        public async Task<string> ForgotPassword(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            user.PasswordResetToken = CreateRandomToken();
+            user.ResetTokenExpires = DateTime.Now.AddDays(1);
+            await _context.SaveChangesAsync();
+
+            return user.PasswordResetToken;
+        }
+
+        public async Task<string> ResetPassword(ResetPassword request)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
+
+            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+            user.PasswordResetToken = null;
+            user.ResetTokenExpires = null;
+
+            await _context.SaveChangesAsync();
+
+            return "Password Reset";
+
+        }
+
+        private string CreateRandomToken()
+        {
+            return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+        }
     }
 }
