@@ -2,6 +2,7 @@
 using DemoAPIApp.Data.Dto;
 using DemoAPIApp.Data.Model;
 using DemoAPIApp.Services.StudentService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,7 @@ namespace DemoAPIApp.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetStudent()
         {
             var student = await _studentService.GetStudents();

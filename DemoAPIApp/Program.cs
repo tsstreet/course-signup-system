@@ -15,6 +15,12 @@ using DemoAPIApp.Services.SubjectGradeService;
 using DemoAPIApp.Services.SubjectService;
 using DemoAPIApp.Services.TeacherService;
 using DemoAPIApp.Services.UserService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,9 +37,32 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Description = "Standard Authorization header using the Bearer scheme (\"Bearer {token}\")",
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
 
-builder.Services.AddCors();
+    options.OperationFilter<SecurityRequirementsOperationFilter>();
+});
+
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+}); 
+
+
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
@@ -67,6 +96,8 @@ app.UseCors(builder =>
 });
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

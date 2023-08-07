@@ -50,13 +50,10 @@ namespace DemoAPIApp.Services.AuthService
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var expires = DateTime.Now.AddDays(1);
 
             var token = new JwtSecurityToken(
-                issuer: null,
-                audience: null,
                 claims: claims,
-                expires: expires,
+                expires: DateTime.Now.AddDays(1),
                 signingCredentials: creds
             );
             return new JwtSecurityTokenHandler().WriteToken(token);
