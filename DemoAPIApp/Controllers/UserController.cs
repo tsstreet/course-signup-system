@@ -5,11 +5,14 @@ using AutoMapper;
 using DemoAPIApp.Data.Dto;
 using DemoAPIApp.Services.TeacherService;
 using DemoAPIApp.Services.UserService;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace DemoAPIApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;

@@ -95,10 +95,12 @@ namespace DemoAPIApp.Services.ClassService
         public async Task<ICollection<Subject>> GetSubjectByClass(int id)
         {
             var subjects = await _context.Classes
-                                    .Where(c => c.ClassId == id)
-                                    .SelectMany(c => c.Schedules)
-                                    .Select(s => s.Subject)
-                                    .ToListAsync();
+                        .Where(c => c.ClassId == id)
+                        .SelectMany(c => c.Schedules)
+                        .Select(s => s.Subject)
+        .               Distinct()
+                        .ToListAsync();
+
             return subjects;
         }
 

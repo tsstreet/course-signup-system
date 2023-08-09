@@ -22,7 +22,7 @@ namespace DemoAPIApp.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet, Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> GetStudent()
         {
             var student = await _studentService.GetStudents();
