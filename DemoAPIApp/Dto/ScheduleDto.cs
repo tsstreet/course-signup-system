@@ -6,9 +6,6 @@ namespace DemoAPIApp.Data.Dto
 {
     public class ScheduleDto
     {
-        [Key]
-        public int ScheduleId { get; set; }
-
         [Required]
         public int ClassId { get; set; }
 
@@ -32,7 +29,8 @@ namespace DemoAPIApp.Data.Dto
         public DateTime TimeEnd { get; set; }
 
         [Required]
-        [DataType(DataType.Date)]
+       
+
         public DateTime StartDate { get; set; }
 
         [Required]

@@ -4,9 +4,7 @@ namespace DemoAPIApp.Data.Dto
 {
     public class SubjectGradeDto
     {
-        [Key]
-        public int Id { get; set; }
-     
+  
         [Required]
         public int AcademicYearId { get; set; }
 

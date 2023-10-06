@@ -4,7 +4,7 @@ using DemoAPIApp.Services.SubjectService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace DemoAPIApp.Services.ClassService
+namespace DemoAPIApp.Services.SubjectService
 {
     public class SubjectService : ISubjectService
     {

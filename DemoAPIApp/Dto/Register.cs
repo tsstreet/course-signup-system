@@ -5,8 +5,6 @@ namespace DemoAPIApp.Data.Dto
 {
     public class Register
     {
-        [Key]
-        public int StdId { get; set; }
 
         [Required]
         public string? LastName { get; set; }

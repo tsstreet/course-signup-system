@@ -5,9 +5,6 @@ namespace DemoAPIApp.Data.Dto
 {
     public class ClassDto
     {
-        [Key]
-        public int ClassId { get; set; }
-
         [Required]
         public string? ClassCode { get; set; }
 
